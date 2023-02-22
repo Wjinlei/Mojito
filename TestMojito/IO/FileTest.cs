@@ -134,4 +134,69 @@ public class FileTest
             Assert.That(result3.GetOk(), Is.EqualTo($"Hello C#!{Environment.NewLine}Hello World!{Environment.NewLine}Hello CSharp!{Environment.NewLine}Hello!{Environment.NewLine}"));
         });
     }
+
+    [Test]
+    public void TestReadAllText()
+    {
+        var lines = new[] { "Hello C#!", "Hello World!" };
+        Mojito.IO.File.WriteAllLines("test_file.txt", lines);
+
+        var result1 = Mojito.IO.File.ReadAllText("test_file.txt");
+        var result2 = Mojito.IO.File.ReadAllText("test_file.txt", System.Text.Encoding.UTF8);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result1.Success, Is.True);
+            Assert.That(result2.Success, Is.True);
+            Assert.That(result1.GetOk(), Is.EqualTo($"Hello C#!{Environment.NewLine}Hello World!{Environment.NewLine}"));
+            Assert.That(result2.GetOk(), Is.EqualTo($"Hello C#!{Environment.NewLine}Hello World!{Environment.NewLine}"));
+        });
+    }
+
+    [Test]
+    public void TestReadLines()
+    {
+        var lines = new[] { "Hello C#!", "Hello World!" };
+        Mojito.IO.File.WriteAllLines("test_file.txt", lines);
+
+        var result1 = Mojito.IO.File.ReadLines("test_file.txt");
+        var result2 = Mojito.IO.File.ReadLines("test_file.txt", System.Text.Encoding.UTF8);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result1.Success, Is.True);
+            Assert.That(result2.Success, Is.True);
+            Assert.That(result1.GetOk().Count, Is.EqualTo(2));
+            Assert.That(result2.GetOk().Count, Is.EqualTo(2));
+        });
+    }
+
+    [Test]
+    public void TestReadAllLines()
+    {
+        var lines = new[] { "Hello C#!", "Hello World!" };
+        Mojito.IO.File.WriteAllLines("test_file.txt", lines);
+
+        var result1 = Mojito.IO.File.ReadAllLines("test_file.txt");
+        var result2 = Mojito.IO.File.ReadAllLines("test_file.txt", System.Text.Encoding.UTF8);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result1.Success, Is.True);
+            Assert.That(result2.Success, Is.True);
+            Assert.That(result1.GetOk(), Is.EqualTo(lines));
+            Assert.That(result2.GetOk(), Is.EqualTo(lines));
+        });
+    }
+
+    [Test]
+    public void TestReadAllBytes()
+    {
+        var bytes = System.Text.Encoding.UTF8.GetBytes("Hello World!");
+        Mojito.IO.File.WriteAllBytes("test_file.txt", bytes);
+
+        var result = Mojito.IO.File.ReadAllBytes("test_file.txt");
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Success, Is.True);
+            Assert.That(result.GetOk(), Is.EqualTo(bytes));
+        });
+    }
 }
