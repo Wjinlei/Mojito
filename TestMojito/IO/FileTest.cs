@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace TestMojito.IO;
 
 public class FileTest
@@ -74,7 +76,7 @@ public class FileTest
     public void TestWriteAllText()
     {
         var result1 = Mojito.IO.File.WriteAllText("test_file.txt", "Hello World!");
-        var result2 = Mojito.IO.File.WriteAllText("test_file.txt", "Hello World!", System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.WriteAllText("test_file.txt", "Hello World!", Encoding.UTF8);
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
@@ -87,7 +89,7 @@ public class FileTest
     {
         var lines = new[] { "Hello C#", "Hello World!" };
         var result1 = Mojito.IO.File.WriteAllLines("test_file.txt", lines);
-        var result2 = Mojito.IO.File.WriteAllLines("test_file.txt", lines, System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.WriteAllLines("test_file.txt", lines, Encoding.UTF8);
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
@@ -98,7 +100,7 @@ public class FileTest
     [Test]
     public void TestWriteAllBytes()
     {
-        var bytes = System.Text.Encoding.UTF8.GetBytes("Hello World!");
+        var bytes = Encoding.UTF8.GetBytes("Hello World!");
         var result = Mojito.IO.File.WriteAllBytes("test_file.txt", bytes);
         Assert.That(result.Success, Is.True);
     }
@@ -107,7 +109,7 @@ public class FileTest
     public void TestAppendAllText()
     {
         var result1 = Mojito.IO.File.AppendAllText("test_file.txt", "Hello World!");
-        var result2 = Mojito.IO.File.AppendAllText("test_file.txt", "Hello World!", System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.AppendAllText("test_file.txt", "Hello World!", Encoding.UTF8);
         var result3 = Mojito.IO.File.ReadAllText("test_file.txt");
         Assert.Multiple(() =>
         {
@@ -124,7 +126,7 @@ public class FileTest
         var lines1 = new[] { "Hello C#!", "Hello World!" };
         var lines2 = new[] { "Hello CSharp!", "Hello!" };
         var result1 = Mojito.IO.File.AppendAllLines("test_file.txt", lines1);
-        var result2 = Mojito.IO.File.AppendAllLines("test_file.txt", lines2, System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.AppendAllLines("test_file.txt", lines2, Encoding.UTF8);
         var result3 = Mojito.IO.File.ReadAllText("test_file.txt");
         Assert.Multiple(() =>
         {
@@ -142,7 +144,7 @@ public class FileTest
         Mojito.IO.File.WriteAllLines("test_file.txt", lines);
 
         var result1 = Mojito.IO.File.ReadAllText("test_file.txt");
-        var result2 = Mojito.IO.File.ReadAllText("test_file.txt", System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.ReadAllText("test_file.txt", Encoding.UTF8);
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
@@ -159,7 +161,7 @@ public class FileTest
         Mojito.IO.File.WriteAllLines("test_file.txt", lines);
 
         var result1 = Mojito.IO.File.ReadLines("test_file.txt");
-        var result2 = Mojito.IO.File.ReadLines("test_file.txt", System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.ReadLines("test_file.txt", Encoding.UTF8);
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
@@ -176,7 +178,7 @@ public class FileTest
         Mojito.IO.File.WriteAllLines("test_file.txt", lines);
 
         var result1 = Mojito.IO.File.ReadAllLines("test_file.txt");
-        var result2 = Mojito.IO.File.ReadAllLines("test_file.txt", System.Text.Encoding.UTF8);
+        var result2 = Mojito.IO.File.ReadAllLines("test_file.txt", Encoding.UTF8);
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
@@ -189,7 +191,7 @@ public class FileTest
     [Test]
     public void TestReadAllBytes()
     {
-        var bytes = System.Text.Encoding.UTF8.GetBytes("Hello World!");
+        var bytes = Encoding.UTF8.GetBytes("Hello World!");
         Mojito.IO.File.WriteAllBytes("test_file.txt", bytes);
 
         var result = Mojito.IO.File.ReadAllBytes("test_file.txt");
