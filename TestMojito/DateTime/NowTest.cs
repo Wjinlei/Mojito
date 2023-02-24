@@ -74,6 +74,7 @@ public class NowTest
         Assert.That(myDateTime, Is.EqualTo(sysDateTime));
     }
 
+    [Test]
     public void TestFormat()
     {
         var timeFormat = "yyyy/MM/dd HH:mm:ss";
