@@ -82,4 +82,15 @@ public class NowTest
         var myDateTime = Mojito.DateTime.Now.Format(timeFormat);
         Assert.That(myDateTime, Is.EqualTo(sysDateTime));
     }
+
+    [Test]
+    public void TestGetUnixTimestamp()
+    {
+        var sysDateTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        var timestamp = Mojito.DateTime.Now.GetUnixTimestamp();
+        TestContext.Out.WriteLine(timestamp);
+        var temp = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Utc, TimeZoneInfo.Local);
+        var myDateTime = temp.AddSeconds(timestamp).ToString("yyyy-MM-dd HH:mm:ss");
+        Assert.That(myDateTime, Is.EqualTo(sysDateTime));
+    }
 }
