@@ -5,33 +5,33 @@ public class StringTest
     [Test]
     public void TestLetters()
     {
-        var randomAlpha = Mojito.Random.String.Letters(10);
-        TestContext.Out.WriteLine(randomAlpha);
-        Assert.That(randomAlpha, Has.Length.EqualTo(10));
+        var randomLetters = Mojito.Random.String.Letters(10);
+        TestContext.Out.WriteLine(randomLetters);
+        Assert.That(randomLetters, Has.Length.EqualTo(10));
     }
 
     [Test]
     public void TestNumbers()
     {
-        var randomAlpha = Mojito.Random.String.Numbers(10);
-        TestContext.Out.WriteLine(randomAlpha);
-        Assert.That(randomAlpha, Has.Length.EqualTo(10));
+        var randomNumbers = Mojito.Random.String.Numbers(10);
+        TestContext.Out.WriteLine(randomNumbers);
+        Assert.That(randomNumbers, Has.Length.EqualTo(10));
     }
 
     [Test]
     public void TestCombinationOfLettersAndNumbers()
     {
-        var randomAlpha = Mojito.Random.String.CombinationOfLettersAndNumbers(10);
-        TestContext.Out.WriteLine(randomAlpha);
-        Assert.That(randomAlpha, Has.Length.EqualTo(10));
+        var randomLettersAndNumbers = Mojito.Random.String.CombinationOfLettersAndNumbers(10);
+        TestContext.Out.WriteLine(randomLettersAndNumbers);
+        Assert.That(randomLettersAndNumbers, Has.Length.EqualTo(10));
     }
 
     [Test]
     public void TestComplex()
     {
-        var randomAlpha = Mojito.Random.String.Complex(10);
-        TestContext.Out.WriteLine(randomAlpha);
-        Assert.That(randomAlpha, Has.Length.EqualTo(10));
+        var randomComplex = Mojito.Random.String.Complex(10);
+        TestContext.Out.WriteLine(randomComplex);
+        Assert.That(randomComplex, Has.Length.EqualTo(10));
     }
 
     [Test]
