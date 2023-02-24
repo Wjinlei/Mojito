@@ -20,7 +20,7 @@ public static class Convert
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             var gbk = Encoding.GetEncoding("GBK");
-            var gbkText = gbk.GetString(utf8Bytes);
+            var gbkText = gbk.GetString(result.GetOk());
             return Result<string>.Ok(gbkText);
         }
         catch (Exception ex)
