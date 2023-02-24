@@ -92,4 +92,13 @@ public static class Now
     {
         return System.DateTime.Now.ToString(timeFormat);
     }
+
+    /// <summary>
+    /// Gets the current Unix timestamp, since January 1, 1970
+    /// </summary>
+    /// <returns>Returns the current Unix timestamp</returns>
+    public static long GetUnixTimestamp()
+    {
+        return new DateTimeOffset(System.DateTime.UtcNow).ToUnixTimeSeconds();
+    }
 }
