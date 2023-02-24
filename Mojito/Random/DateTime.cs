@@ -22,6 +22,6 @@ public static class DateTime
         var minute = Rnd.Next(0, 60);
         var second = Rnd.Next(0, 60);
 
-        return Convert.ToDateTime($"{year}/{month}/{day} {hour}:{minute}:{second}");
+        return System.Convert.ToDateTime($"{year}/{month}/{day} {hour}:{minute}:{second}");
     }
 }
