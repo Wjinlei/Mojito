@@ -2,7 +2,7 @@
 
 namespace TestMojito.Random;
 
-public class Number
+public class NumberTest
 {
     [Test]
     public void TestCreate()
