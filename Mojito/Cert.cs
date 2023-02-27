@@ -32,17 +32,16 @@ public static class Cert
     public static string[] GetDNSNames(X509Certificate2 cert)
     {
         var ext = cert.Extensions["2.5.29.17"];
+
         if (ext is null)
-        {
-            return new[] { cert.GetNameInfo(X509NameType.DnsName, false) };
-        }
-        else
-        {
-            return ext.Format(true)
-                .Replace("DNS Name=", "")
-                .Trim()
-                .Split(Environment.NewLine);
-        }
+            return new[] {
+                cert.GetNameInfo(X509NameType.DnsName, false)
+            };
+
+        return ext.Format(true)
+            .Replace("DNS Name=", "")
+            .Trim()
+            .Split(Environment.NewLine);
     }
 
     /// <summary>
