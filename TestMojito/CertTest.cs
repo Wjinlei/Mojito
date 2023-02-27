@@ -103,39 +103,36 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     }
 
     [Test]
-    public void TestGetIssuerCN()
+    public void TestIssuerCN()
     {
         var result = Mojito.Cert.Create(PEM, KEY);
-        var issuer = Mojito.Cert.GetIssuerCN(result.GetOk());
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.Success, Is.True);
-            Assert.That(issuer, Is.EqualTo("TrustAsia TLS RSA CA"));
-        });
+        Assert.That(result.Success, Is.True);
+
+        var cert = result.GetOk();
+        var cn = cert.IssuerCN();
+        Assert.That(cn, Is.EqualTo("TrustAsia TLS RSA CA"));
     }
 
     [Test]
-    public void TestGetSubject()
+    public void TestSubject()
     {
         var result = Mojito.Cert.Create(PEM, KEY);
-        var subject = Mojito.Cert.GetSubject(result.GetOk());
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.Success, Is.True);
-            Assert.That(subject, Is.EqualTo("www.fuxianlei.cn"));
-        });
+        Assert.That(result.Success, Is.True);
+
+        var cert = result.GetOk();
+        var subject = cert.Subject();
+        Assert.That(subject, Is.EqualTo("www.fuxianlei.cn"));
     }
 
     [Test]
-    public void TestGetDNSNames()
+    public void TestDNSNames()
     {
         var expect = new[] { "www.fuxianlei.cn", "fuxianlei.cn" };
         var result = Mojito.Cert.Create(PEM, KEY);
-        var dns = Mojito.Cert.GetDNSNames(result.GetOk());
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.Success, Is.True);
-            Assert.That(dns, Is.EqualTo(expect));
-        });
+        Assert.That(result.Success, Is.True);
+
+        var cert = result.GetOk();
+        var dnsNames = cert.DNSNames();
+        Assert.That(dnsNames, Is.EqualTo(expect));
     }
 }
