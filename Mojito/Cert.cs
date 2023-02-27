@@ -2,40 +2,57 @@
 using System.Security.Cryptography;
 namespace Mojito;
 
-public static class Cert
+public class Cert
 {
+    public X509Certificate2 Original { get; set; }
+
+    /// <summary>
+    /// Instantiate an Cert object
+    /// </summary>
+    /// <param name="certPem">Certificate pem string</param>
+    /// <param name="keyPem">Key pem string</param>
+    /// <exception cref="CryptographicException"></exception>
+    private Cert(string certPem, string keyPem)
+    {
+        try
+        {
+            Original = X509Certificate2.CreateFromPem(certPem, keyPem);
+        }
+        catch (CryptographicException)
+        {
+            throw;
+        }
+    }
+
     /// <summary>
     /// Get Issuer
     /// </summary>
-    /// <param name="cert" cref="X509Certificate2">Certificate object</param>
     /// <returns></returns>
-    public static string GetIssuerCN(X509Certificate2 cert)
+    public string IssuerCN()
     {
-        return cert.GetNameInfo(X509NameType.SimpleName, true);
+        return Original.GetNameInfo(X509NameType.SimpleName, true);
     }
 
     /// <summary>
     /// Get Subject
     /// </summary>
-    /// <param name="cert" cref="X509Certificate2">Certificate object</param>
     /// <returns></returns>
-    public static string GetSubject(X509Certificate2 cert)
+    public string Subject()
     {
-        return cert.GetNameInfo(X509NameType.SimpleName, false);
+        return Original.GetNameInfo(X509NameType.SimpleName, false);
     }
 
     /// <summary>
     /// Get all dns
     /// </summary>
-    /// <param name="cert" cref="X509Certificate2">Certificate object</param>
     /// <returns></returns>
-    public static string[] GetDNSNames(X509Certificate2 cert)
+    public string[] DNSNames()
     {
-        var ext = cert.Extensions["2.5.29.17"];
+        var ext = Original.Extensions["2.5.29.17"];
 
         if (ext is null)
             return new[] {
-                cert.GetNameInfo(X509NameType.DnsName, false)
+                Original.GetNameInfo(X509NameType.DnsName, false)
             };
 
         return ext.Format(true)
@@ -50,15 +67,15 @@ public static class Cert
     /// <param name="certPem">Certificate pem string</param>
     /// <param name="keyPem">Key pem string</param>
     /// <returns></returns>
-    public static Result<X509Certificate2> Create(string certPem, string keyPem)
+    public static Result<Cert> Create(string certPem, string keyPem)
     {
         try
         {
-            return Result<X509Certificate2>.Ok(X509Certificate2.CreateFromPem(certPem, keyPem));
+            return Result<Cert>.Ok(new Cert(certPem, keyPem));
         }
         catch (CryptographicException ex)
         {
-            return Result<X509Certificate2>.Error(ex); ;
+            return Result<Cert>.Error(ex); ;
         }
     }
 }
