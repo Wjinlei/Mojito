@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Mojito.Crypto;
 
-public class Md5
+public static class Md5
 {
     /// <summary>
     /// Calculates the md5 value of the file
