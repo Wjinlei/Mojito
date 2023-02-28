@@ -11,7 +11,7 @@ public static class Cmd
     /// <returns></returns>
     public static Result<string> Execute(string cmd)
     {
-        var compiler = new Process();
+        using var compiler = new Process();
 
         switch (Environment.OSVersion.Platform)
         {
@@ -19,7 +19,7 @@ public static class Cmd
                 compiler.StartInfo.FileName = "cmd.exe";
                 break;
             case PlatformID.Unix:
-                compiler.StartInfo.FileName = "/bin/bash";
+                compiler.StartInfo.FileName = "bash";
                 break;
             default:
                 return Result<string>.Error(new Exception("Unsupported operating system."));
