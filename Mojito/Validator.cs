@@ -11,11 +11,7 @@ public static class Validator
     /// <returns></returns>
     public static bool IsEmail(string email)
     {
-        var regex = new Regex(
-            @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$",
-            RegexOptions.None, TimeSpan.FromMilliseconds(150));
-
-        return regex.Match(email).Success;
+        return Match(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
     }
 
     /// <summary>
@@ -25,11 +21,7 @@ public static class Validator
     /// <returns></returns>
     public static bool IsLetter(string letter)
     {
-        var regex = new Regex(
-            @"^[a-zA-Z]+$",
-            RegexOptions.None, TimeSpan.FromMilliseconds(150));
-
-        return regex.Match(letter).Success;
+        return Match(letter, @"^[a-zA-Z]+$");
     }
 
     /// <summary>
@@ -42,14 +34,22 @@ public static class Validator
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static bool IsLetter(string letter, uint min, uint max)
     {
-        if (min == 0)
-            throw new ArgumentOutOfRangeException("min cannot equal 0");
-        if (min > max)
-            throw new ArgumentOutOfRangeException("min cannot be greater than max");
+        if (min == 0 || min > max)
+            throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
 
-        var re = "^[a-zA-Z]{" + min + "," + max + "}$";
-        var regex = new Regex(re, RegexOptions.None, TimeSpan.FromMilliseconds(150));
+        return Match(letter, $"^[a-zA-Z]{{{min},{max}}}$");
+    }
 
-        return regex.Match(letter).Success;
+    /// <summary>
+    /// Matches a given regular expression
+    /// </summary>
+    /// <param name="str">String</param>
+    /// <param name="regex">Regex</param>
+    /// <returns></returns>
+    private static bool Match(string str, string regex)
+    {
+        var regexMatcher = new Regex(regex,
+            RegexOptions.None, TimeSpan.FromMilliseconds(150));
+        return regexMatcher.Match(str).Success;
     }
 }
