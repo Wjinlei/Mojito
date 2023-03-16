@@ -67,6 +67,32 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that the given string is a combination of letters and numbers
+    /// </summary>
+    /// <param name="alpha">String</param>
+    /// <returns></returns>
+    public static bool IsAlpha(string alpha)
+    {
+        return IsMatch(alpha, @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$");
+    }
+
+    /// <summary>
+    /// Verify that the given string is a combination of letters and numbers of the specified length
+    /// </summary>
+    /// <param name="alpha">String</param>
+    /// <param name="min">Min length</param>
+    /// <param name="max">Max length</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static bool IsAlpha(string alpha, uint min, uint max)
+    {
+        if (min == 0 || min > max)
+            throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
+
+        return IsMatch(alpha, $"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{{{min},{max}}}$");
+    }
+
+    /// <summary>
     /// Matches a given regular expression
     /// </summary>
     /// <param name="str">String</param>
