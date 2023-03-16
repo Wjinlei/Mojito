@@ -11,7 +11,7 @@ public static class Validator
     /// <returns></returns>
     public static bool IsEmail(string email)
     {
-        return Match(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
+        return IsMatch(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public static class Validator
     /// <returns></returns>
     public static bool IsLetter(string letter)
     {
-        return Match(letter, @"^[a-zA-Z]+$");
+        return IsMatch(letter, @"^[a-zA-Z]+$");
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public static class Validator
         if (min == 0 || min > max)
             throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
 
-        return Match(letter, $"^[a-zA-Z]{{{min},{max}}}$");
+        return IsMatch(letter, $"^[a-zA-Z]{{{min},{max}}}$");
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public static class Validator
     /// <param name="str">String</param>
     /// <param name="regex">Regex</param>
     /// <returns></returns>
-    private static bool Match(string str, string regex)
+    private static bool IsMatch(string str, string regex)
     {
         var regexMatcher = new Regex(regex,
             RegexOptions.None, TimeSpan.FromMilliseconds(150));
