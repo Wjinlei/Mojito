@@ -4,6 +4,11 @@ namespace Mojito;
 
 public static class Validator
 {
+    /// <summary>
+    /// Verify that the given string is email
+    /// </summary>
+    /// <param name="email">String</param>
+    /// <returns></returns>
     public static bool IsEmail(string email)
     {
         var regex = new Regex(
@@ -14,7 +19,7 @@ public static class Validator
     }
 
     /// <summary>
-    /// Checks whether a given string is a pure letter
+    /// Verify that the given string is a pure letter
     /// </summary>
     /// <param name="letter">String</param>
     /// <returns></returns>
@@ -28,7 +33,7 @@ public static class Validator
     }
 
     /// <summary>
-    /// Checks whether a given string is a pure letter of the specified length
+    /// Verify that the given string is a pure letter of the specified length
     /// </summary>
     /// <param name="letter">String</param>
     /// <param name="min">Min length</param>
