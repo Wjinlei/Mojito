@@ -20,4 +20,16 @@ public class ValidatorTest
             Assert.That(ok2, Is.True);
         });
     }
+
+    [Test]
+    public void TestIsDight()
+    {
+        var ok1 = Mojito.Validator.IsDigit("123");
+        var ok2 = Mojito.Validator.IsDigit("123", 1, 10);
+        Assert.Multiple(() =>
+        {
+            Assert.That(ok1, Is.True);
+            Assert.That(ok2, Is.True);
+        });
+    }
 }
