@@ -41,6 +41,32 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that the given string is a pure digit
+    /// </summary>
+    /// <param name="digit">String</param>
+    /// <returns></returns>
+    public static bool IsDigit(string digit)
+    {
+        return IsMatch(digit, @"^\d+$");
+    }
+
+    /// <summary>
+    /// Verify that the given string is a pure digit of the specified length
+    /// </summary>
+    /// <param name="digit">String</param>
+    /// <param name="min">Min length</param>
+    /// <param name="max">Max length</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static bool IsDigit(string digit, uint min, uint max)
+    {
+        if (min == 0 || min > max)
+            throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
+
+        return IsMatch(digit, $"^\\d{{{min},{max}}}$");
+    }
+
+    /// <summary>
     /// Matches a given regular expression
     /// </summary>
     /// <param name="str">String</param>
