@@ -1,4 +1,4 @@
-﻿namespace TestMojito;
+﻿namespace Mojito.Test;
 
 public class CertTest
 {
@@ -98,14 +98,14 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     [Test]
     public void TestCreate()
     {
-        var result = Mojito.Cert.Create(PEM, KEY);
+        var result = Cert.Create(PEM, KEY);
         Assert.That(result.Success, Is.True);
     }
 
     [Test]
     public void TestIssuerCN()
     {
-        var result = Mojito.Cert.Create(PEM, KEY);
+        var result = Cert.Create(PEM, KEY);
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();
@@ -116,7 +116,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     [Test]
     public void TestSubject()
     {
-        var result = Mojito.Cert.Create(PEM, KEY);
+        var result = Cert.Create(PEM, KEY);
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();
@@ -128,7 +128,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     public void TestDNSNames()
     {
         var expect = new[] { "www.fuxianlei.cn", "fuxianlei.cn" };
-        var result = Mojito.Cert.Create(PEM, KEY);
+        var result = Cert.Create(PEM, KEY);
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();

@@ -1,4 +1,4 @@
-﻿namespace TestMojito.IO;
+﻿namespace Mojito.Test.IO;
 
 public class DirectoryTest
 {

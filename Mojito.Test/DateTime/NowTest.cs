@@ -1,4 +1,4 @@
-﻿namespace TestMojito.DateTime;
+﻿namespace Mojito.Test.DateTime;
 
 public class NowTest
 {

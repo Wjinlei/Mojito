@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace TestMojito.Crypto;
+namespace Mojito.Test.Crypto;
 
 public class Md5Test
 {

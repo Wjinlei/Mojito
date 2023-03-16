@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace TestMojito.Crypto;
+namespace Mojito.Test.Crypto;
 
 public class AESTest
 {

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace TestMojito.IO;
+namespace Mojito.Test.IO;
 
 public class FileTest
 {

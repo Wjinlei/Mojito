@@ -1,4 +1,4 @@
-﻿namespace TestMojito.Random;
+﻿namespace Mojito.Test.Random;
 
 public class DateTimeTest
 {

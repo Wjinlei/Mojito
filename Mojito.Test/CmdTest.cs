@@ -1,11 +1,11 @@
-﻿namespace TestMojito;
+﻿namespace Mojito.Test;
 
 public class CmdTest
 {
     [Test]
     public void TestExec()
     {
-        var result = Mojito.Cmd.Execute(@"netstat -ano");
+        var result = Cmd.Execute(@"netstat -ano");
         if (!result.Success)
             TestContext.Out.WriteLine(result.Message);
 
