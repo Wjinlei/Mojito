@@ -32,4 +32,16 @@ public class ValidatorTest
             Assert.That(ok2, Is.True);
         });
     }
+
+    [Test]
+    public void TestIsAlpha()
+    {
+        var ok1 = Mojito.Validator.IsAlpha("abc123");
+        var ok2 = Mojito.Validator.IsAlpha("abc123", 1, 10);
+        Assert.Multiple(() =>
+        {
+            Assert.That(ok1, Is.True);
+            Assert.That(ok2, Is.True);
+        });
+    }
 }
