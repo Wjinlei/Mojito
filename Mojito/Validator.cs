@@ -126,7 +126,7 @@ public static class Validator
     /// <param name="str">String</param>
     /// <param name="regex">Regex</param>
     /// <returns></returns>
-    private static bool IsMatch(string str, string regex)
+    public static bool IsMatch(string str, string regex)
     {
         var regexMatcher = new Regex(regex,
             RegexOptions.None, TimeSpan.FromMilliseconds(150));
