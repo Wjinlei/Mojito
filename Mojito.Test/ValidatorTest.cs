@@ -72,4 +72,23 @@ public class ValidatorTest
             Assert.That(ok8, Is.True);
         });
     }
+
+    [Test]
+    public void TestIsDomain()
+    {
+        var domains = new[] {
+            "xn--fiqs8s.cn",
+            "example.com",
+            "qq.com",
+            "example.test.cn",
+            "6.cn",
+            "test.co.net"
+        };
+
+        foreach (var domain in domains)
+        {
+            var ok = Validator.IsDomain(domain);
+            Assert.That(ok, Is.True);
+        }
+    }
 }
