@@ -191,6 +191,27 @@ public class ValidatorTest
     }
 
     [Test]
+    public void TestIsURL()
+    {
+        var urls = new[] {
+            "http://xn--fiqs8s.cn",
+            "http://example.com",
+            "http://qq.com",
+            "file://example.test.cn",
+            "ftp://6.cn",
+            "https://test.co.net",
+            "https://example.com/login.php",
+            "https://example.com/admin/login.php",
+        };
+
+        foreach (var url in urls)
+        {
+            var ok = Validator.IsURL(url);
+            Assert.That(ok, Is.True);
+        }
+    }
+
+    [Test]
     public void TestIsDomain()
     {
         var domains = new[] {
