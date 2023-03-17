@@ -93,7 +93,7 @@ public static class Validator
     }
 
     /// <summary>
-    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&*()_+-={}[]|\:;"'<>,.?/
+    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&amp;*()_+-={}[]|\:;&quot;'&lt;&gt;,.?/
     /// </summary>
     /// <param name="complex">String</param>
     /// <returns></returns>
@@ -104,7 +104,7 @@ public static class Validator
     }
 
     /// <summary>
-    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&*()_+-={}[]|\:;"'<>,.?/ of the specified length
+    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&amp;*()_+-={}[]|\:;&quot;'&lt;&gt;,.?/ of the specified length
     /// </summary>
     /// <param name="complex">String</param>
     /// <param name="min">Min length</param>
