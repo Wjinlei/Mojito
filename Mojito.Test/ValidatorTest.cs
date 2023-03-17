@@ -270,4 +270,20 @@ public class ValidatorTest
             Assert.That(ok, Is.EqualTo(ip.Value));
         }
     }
+
+    [Test]
+    public void TestIsPhoneNumber()
+    {
+        var phoneNumbers = new[] {
+            "19119255642",
+            "17888829981",
+            "18311006933",
+        };
+
+        foreach (var phoneNumber in phoneNumbers)
+        {
+            var ok = Validator.IsPhoneNumber(phoneNumber);
+            Assert.That(ok, Is.True);
+        }
+    }
 }
