@@ -44,4 +44,16 @@ public class ValidatorTest
             Assert.That(ok2, Is.True);
         });
     }
+
+    [Test]
+    public void TestIsComplex()
+    {
+        var ok1 = Validator.IsComplex("c#123\\");
+        var ok2 = Validator.IsComplex("c#123\\", 1, 10);
+        Assert.Multiple(() =>
+        {
+            Assert.That(ok1, Is.True);
+            Assert.That(ok2, Is.True);
+        });
+    }
 }
