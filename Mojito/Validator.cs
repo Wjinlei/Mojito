@@ -100,7 +100,8 @@ public static class Validator
     public static bool IsComplex(string complex)
     {
         return IsMatch(complex,
-            @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/])[A-Za-z\d`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/]+$");
+            @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/])" +
+            @"[A-Za-z\d`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/]+$");
     }
 
     /// <summary>
@@ -117,7 +118,8 @@ public static class Validator
             throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
 
         return IsMatch(complex,
-            $"^(?=.*[A-Za-z])(?=.*\\d)(?=.*[`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/])[A-Za-z\\d`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/]{{{min},{max}}}$");
+            $"^(?=.*[A-Za-z])(?=.*\\d)(?=.*[`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/])" +
+            $"[A-Za-z\\d`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/]{{{min},{max}}}$");
     }
 
     /// <summary>
@@ -128,6 +130,18 @@ public static class Validator
     public static bool IsDomain(string domain)
     {
         return IsMatch(domain, @"^([0-9a-zA-Z-]{1,}\.)+([a-zA-Z]{2,})$");
+    }
+
+    /// <summary>
+    /// Verify that a given string is in ip-v4[:port]
+    /// </summary>
+    /// <param name="ip">String</param>
+    /// <returns></returns>
+    public static bool IsIPV4(string ip)
+    {
+        return IsMatch(ip,
+            @"^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])" +
+            @"(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$");
     }
 
     /// <summary>
