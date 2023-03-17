@@ -123,6 +123,16 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that a given string is in url
+    /// </summary>
+    /// <param name="url">String</param>
+    /// <returns></returns>
+    public static bool IsURL(string url)
+    {
+        return IsMatch(url, @"^((https?|ftp|file):\/\/)?([\da-z.-]+)\.([a-z]{2,6})([\/\w.-]*)*\/?$");
+    }
+
+    /// <summary>
     /// Verify that a given string is in domain
     /// </summary>
     /// <param name="domain">String</param>
