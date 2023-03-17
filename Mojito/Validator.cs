@@ -186,6 +186,16 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that a given string is in phone number, The loosest check, as long as it starts with 1 and has 11 bits
+    /// </summary>
+    /// <param name="number">String</param>
+    /// <returns></returns>
+    public static bool IsPhoneNumber(string number)
+    {
+        return IsMatch(number, @"^1\d{10}$");
+    }
+
+    /// <summary>
     /// Matches a given regular expression
     /// </summary>
     /// <param name="str">String</param>
