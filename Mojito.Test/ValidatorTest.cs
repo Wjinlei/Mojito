@@ -208,4 +208,28 @@ public class ValidatorTest
             Assert.That(ok, Is.True);
         }
     }
+
+    [Test]
+    public void TestIsIPV4()
+    {
+        var ipsMap = new Dictionary<string, bool>
+        {
+            { "127.0.0.1", true },
+            { "127.0.0.1:8080", true },
+            { "10.35.10.253", true },
+            { "10.35.10.253:8888", true },
+            { "192.168.0.1", true },
+            { "abc.123.abc.192", false },
+            { "192.168.0.1000", false },
+            { "192.168.0.256", false },
+            { "1192.168.0.256", false },
+            { "192.168.0.1:80888", false },
+        };
+
+        foreach (var ip in ipsMap)
+        {
+            var ok = Validator.IsIPV4(ip.Key);
+            Assert.That(ok, Is.EqualTo(ip.Value));
+        }
+    }
 }
