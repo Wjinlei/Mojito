@@ -93,6 +93,34 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&*()_+-={}[]|\:;"'<>,.?/
+    /// </summary>
+    /// <param name="complex">String</param>
+    /// <returns></returns>
+    public static bool IsComplex(string complex)
+    {
+        return IsMatch(complex,
+            @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/])[A-Za-z\d`~!@#$%^&*()_+\-={}[\]|\\:;""'<>,.?/]+$");
+    }
+
+    /// <summary>
+    /// Verify that the given string is a combination of letters、numbers and `~!@#$%^&*()_+-={}[]|\:;"'<>,.?/ of the specified length
+    /// </summary>
+    /// <param name="complex">String</param>
+    /// <param name="min">Min length</param>
+    /// <param name="max">Max length</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static bool IsComplex(string complex, uint min, uint max)
+    {
+        if (min == 0 || min > max)
+            throw new ArgumentOutOfRangeException("min cannot be 0 or greater than max");
+
+        return IsMatch(complex,
+            $"^(?=.*[A-Za-z])(?=.*\\d)(?=.*[`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/])[A-Za-z\\d`~!@#$%^&*()_+\\-={{}}[\\]|\\\\:;\"'<>,.?/]{{{min},{max}}}$");
+    }
+
+    /// <summary>
     /// Matches a given regular expression
     /// </summary>
     /// <param name="str">String</param>
