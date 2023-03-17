@@ -232,4 +232,21 @@ public class ValidatorTest
             Assert.That(ok, Is.EqualTo(ip.Value));
         }
     }
+
+    [Test]
+    public void TestIsIPV6()
+    {
+        var ipsMap = new Dictionary<string, bool>
+        {
+            { "2001:0db8:85a3:0000:0000:8a2e:0370:7334", true },
+            { "2001:0db8:0000:0003:0000:8a2e:0370:7334", true },
+            { "[2001:0db8:0000:0003:0000:8a2e:0370:7334]:8080", true },
+        };
+
+        foreach (var ip in ipsMap)
+        {
+            var ok = Validator.IsIPV6(ip.Key);
+            Assert.That(ok, Is.EqualTo(ip.Value));
+        }
+    }
 }
