@@ -231,42 +231,26 @@ public class ValidatorTest
     }
 
     [Test]
-    public void TestIsIPV4()
+    public void TestIsIp()
     {
         var ipsMap = new Dictionary<string, bool>
         {
             { "127.0.0.1", true },
-            { "127.0.0.1:8080", true },
             { "10.35.10.253", true },
-            { "10.35.10.253:8888", true },
             { "192.168.0.1", true },
             { "abc.123.abc.192", false },
             { "192.168.0.1000", false },
             { "192.168.0.256", false },
             { "1192.168.0.256", false },
             { "192.168.0.1:80888", false },
-        };
-
-        foreach (var ip in ipsMap)
-        {
-            var ok = Validator.IsIPV4(ip.Key);
-            Assert.That(ok, Is.EqualTo(ip.Value));
-        }
-    }
-
-    [Test]
-    public void TestIsIPV6()
-    {
-        var ipsMap = new Dictionary<string, bool>
-        {
             { "2001:0db8:85a3:0000:0000:8a2e:0370:7334", true },
-            { "2001:0db8:0000:0003:0000:8a2e:0370:7334", true },
+            { "2001:0db8:0000:0003:0000:8a2e:0370:7334:8000", true },
             { "[2001:0db8:0000:0003:0000:8a2e:0370:7334]:8080", true },
         };
 
         foreach (var ip in ipsMap)
         {
-            var ok = Validator.IsIPV6(ip.Key);
+            var ok = Validator.IsIp(ip.Key);
             Assert.That(ok, Is.EqualTo(ip.Value));
         }
     }

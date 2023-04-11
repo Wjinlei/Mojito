@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Mojito;
 
@@ -143,46 +144,18 @@ public static class Validator
     }
 
     /// <summary>
-    /// Verify that a given string is in ip-v4[:port]
+    /// Verify that a given string is in ip address[:port]
     /// </summary>
-    /// <param name="ip">String</param>
+    /// <param name="ipAddr">String</param>
     /// <returns></returns>
-    public static bool IsIPV4(string ip)
+    public static bool IsIp(string ipAddr)
     {
-        return IsMatch(ip,
-            @"^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])" +
-            @"(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$");
-    }
+        var pattern = @"^(" /* Group1 */ + @"(\d{1,3}\.){3}\d{1,3}" /* IPV4 */ + @"|" +
+            @"(\[?[0-9a-fA-F]{1,4}(:[0-9a-fA-F]{1,4}){7}\]?)" /* IPV6 */ + @")" + /* End Group1 */
+            @"(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$"; // Port
 
-    /// <summary>
-    /// Verify that a given string is in ip-v6[:port]
-    /// </summary>
-    /// <param name="ip"></param>
-    /// <returns></returns>
-    public static bool IsIPV6(string ip)
-    {
-        return IsMatch(ip,
-            @"(^(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))$)|" +
-            @"(^\[(?:(?:(?:[0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){6}:[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){5}:([0-9A-Fa-f]{1,4}:)?[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){4}:([0-9A-Fa-f]{1,4}:){0,2}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){3}:([0-9A-Fa-f]{1,4}:){0,3}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){2}:([0-9A-Fa-f]{1,4}:){0,4}[0-9A-Fa-f]{1,4})|" +
-            @"(([0-9A-Fa-f]{1,4}:){6}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"(([0-9A-Fa-f]{1,4}:){0,5}:((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"(::([0-9A-Fa-f]{1,4}:){0,5}((\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b)\.){3}(\b((25[0-5])|(1\d{2})|(2[0-4]\d)|(\d{1,2}))\b))|" +
-            @"([0-9A-Fa-f]{1,4}::([0-9A-Fa-f]{1,4}:){0,5}[0-9A-Fa-f]{1,4})|(::([0-9A-Fa-f]{1,4}:){0,6}[0-9A-Fa-f]{1,4})|(([0-9A-Fa-f]{1,4}:){1,7}:))\]" +
-            @"(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$)");
+        return IPAddress.TryParse(
+            Match(ipAddr, pattern).Groups[1].Value, out _);
     }
 
     /// <summary>
@@ -203,8 +176,19 @@ public static class Validator
     /// <returns></returns>
     public static bool IsMatch(string str, string regex)
     {
+        return Match(str, regex).Success;
+    }
+
+    /// <summary>
+    /// Matches a given regular expression and returns a Match object
+    /// </summary>
+    /// <param name="str">String</param>
+    /// <param name="regex">Regex</param>
+    /// <returns></returns>
+    public static Match Match(string str, string regex)
+    {
         var regexMatcher = new Regex(regex,
             RegexOptions.None, TimeSpan.FromMilliseconds(150));
-        return regexMatcher.Match(str).Success;
+        return regexMatcher.Match(str);
     }
 }
