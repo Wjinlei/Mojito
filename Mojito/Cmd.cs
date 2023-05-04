@@ -22,7 +22,9 @@ public static class Cmd
                 compiler.StartInfo.FileName = "bash";
                 break;
             default:
-                return Result<string>.Error(new Exception("Unsupported operating system."));
+                return Result<string>.Error(
+                    new PlatformNotSupportedException(
+                        $"Unsupported operating system: {Environment.OSVersion}."));
         }
 
         compiler.StartInfo.RedirectStandardInput = true;
