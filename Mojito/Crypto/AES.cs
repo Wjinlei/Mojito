@@ -111,7 +111,7 @@ public static class AES
             return Result<string>.Error(new Exception("Build key exception: " + ex.Message));
         }
 
-        string? plaintext = null;
+        string? plainText = null;
 
         using var aes = Aes.Create();
         aes.Key = newKey;
@@ -125,14 +125,14 @@ public static class AES
             using MemoryStream msDecrypt = new(encrypted);
             using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
             using StreamReader srDecrypt = new(csDecrypt, encoding);
-            plaintext = srDecrypt.ReadToEnd().TrimEnd('\0');
+            plainText = srDecrypt.ReadToEnd().TrimEnd('\0');
         }
         catch (Exception ex)
         {
             return Result<string>.Error(new Exception("Failed to decrypt data from the stream: " + ex.Message));
         }
 
-        return plaintext;
+        return plainText;
     }
 
     public static Result<string> GbkAesDecryptFromHex(string hex, string key, CipherMode cipherMode, PaddingMode paddingMode)
