@@ -70,7 +70,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return Result<string>.Error(ex);
+            return ex;
         }
     }
 
@@ -87,7 +87,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return Result<byte[]>.Error(ex);
+            return ex;
         }
     }
 
@@ -108,7 +108,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return Result <string>.Error(ex);
+            return ex;
         }
     }
 
@@ -125,7 +125,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return Result < byte[]>.Error(ex);
+            return ex;
         }
     }
 
