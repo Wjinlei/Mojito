@@ -4,6 +4,55 @@ namespace Mojito;
 
 public static class Convert
 {
+    private static readonly Encoding GBKEncoding;
+
+    static Convert()
+    {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        GBKEncoding = Encoding.GetEncoding("GBK");
+    }
+
+
+    /// <summary>
+    /// Convert byte array to UTF8 string
+    /// </summary>
+    /// <param name="bytes">byte array</param>
+    /// <returns></returns>
+    public static string UTF8(byte[] bytes)
+    {
+        return Encoding.UTF8.GetString(bytes);
+    }
+
+    /// <summary>
+    /// Decode strings into byte arrays using UTF8 encoding
+    /// </summary>
+    /// <param name="bytes">byte array</param>
+    /// <returns></returns>
+    public static byte[] UTF8Bytes(string text)
+    {
+        return Encoding.UTF8.GetBytes(text);
+    }
+
+    /// <summary>
+    /// Convert byte array to GBK string
+    /// </summary>
+    /// <param name="bytes">byte array</param>
+    /// <returns></returns>
+    public static string GBK(byte[] bytes)
+    {
+        return GBKEncoding.GetString(bytes);
+    }
+
+    /// <summary>
+    /// Decode strings into byte arrays using GBK encoding
+    /// </summary>
+    /// <param name="bytes">byte array</param>
+    /// <returns></returns>
+    public static byte[] GBKBytes(string text)
+    {
+        return GBKEncoding.GetBytes(text);
+    }
+
     /// <summary>
     /// UTF8 character string to GBK character string
     /// </summary>
@@ -13,19 +62,15 @@ public static class Convert
     {
         try
         {
-            var utf8Bytes = Encoding.UTF8.GetBytes(text);
-            var result = UTF8ToGBK(utf8Bytes);
+            var result = UTF8ToGBK(UTF8Bytes(text));
             if (!result.Success)
-                return Result<string>.Error(result.GetError());
+                return result.GetError();
 
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var gbk = Encoding.GetEncoding("GBK");
-            var gbkText = gbk.GetString(result.GetOk());
-            return Result<string>.Ok(gbkText);
+            return GBK(result.GetOk());
         }
         catch (Exception ex)
         {
-            return Result<string>.Error(ex);
+            return ex;
         }
     }
 
@@ -38,14 +83,11 @@ public static class Convert
     {
         try
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var gbk = Encoding.GetEncoding("GBK");
-            var gbkBytes = Encoding.Convert(Encoding.UTF8, gbk, utf8Bytes);
-            return Result<byte[]>.Ok(gbkBytes);
+            return Encoding.Convert(Encoding.UTF8, GBKEncoding, utf8Bytes);
         }
         catch (Exception ex)
         {
-            return Result<byte[]>.Error(ex);
+            return ex;
         }
     }
 
@@ -58,18 +100,15 @@ public static class Convert
     {
         try
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var gbk = Encoding.GetEncoding("GBK");
-            var gbkBytes = gbk.GetBytes(text);
-            var result = GBKToUTF8(gbkBytes);
+            var result = GBKToUTF8(GBKBytes(text));
             if (!result.Success)
-                return Result<string>.Error(result.GetError());
-            var utf8Text = Encoding.UTF8.GetString(result.GetOk());
-            return Result<string>.Ok(utf8Text);
+                return result.GetError();
+
+            return UTF8(result.GetOk());
         }
         catch (Exception ex)
         {
-            return Result<string>.Error(ex);
+            return ex;
         }
     }
 
@@ -82,14 +121,11 @@ public static class Convert
     {
         try
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var gbk = Encoding.GetEncoding("GBK");
-            var utf8Bytes = Encoding.Convert(gbk, Encoding.UTF8, gbkBytes);
-            return Result<byte[]>.Ok(utf8Bytes);
+            return Encoding.Convert(GBKEncoding, Encoding.UTF8, gbkBytes);
         }
         catch (Exception ex)
         {
-            return Result<byte[]>.Error(ex);
+            return ex;
         }
     }
 
