@@ -1,10 +1,11 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
+
 namespace Mojito;
 
 public class Cert
 {
-    public X509Certificate2 Original { get; set; }
+    public X509Certificate2 _cert;
 
     /// <summary>
     /// Instantiate an Cert object
@@ -16,49 +17,12 @@ public class Cert
     {
         try
         {
-            Original = X509Certificate2.CreateFromPem(certPem, keyPem);
+            _cert = X509Certificate2.CreateFromPem(certPem, keyPem);
         }
         catch (CryptographicException)
         {
             throw;
         }
-    }
-
-    /// <summary>
-    /// Get Issuer
-    /// </summary>
-    /// <returns></returns>
-    public string IssuerCN()
-    {
-        return Original.GetNameInfo(X509NameType.SimpleName, true);
-    }
-
-    /// <summary>
-    /// Get Subject
-    /// </summary>
-    /// <returns></returns>
-    public string Subject()
-    {
-        return Original.GetNameInfo(X509NameType.SimpleName, false);
-    }
-
-    /// <summary>
-    /// Get all dns
-    /// </summary>
-    /// <returns></returns>
-    public string[] DNSNames()
-    {
-        var ext = Original.Extensions["2.5.29.17"];
-
-        if (ext is null)
-            return new[] {
-                Original.GetNameInfo(X509NameType.DnsName, false)
-            };
-
-        return ext.Format(true)
-            .Replace("DNS Name=", "")
-            .Trim()
-            .Split(Environment.NewLine);
     }
 
     /// <summary>
@@ -71,11 +35,64 @@ public class Cert
     {
         try
         {
-            return Result<Cert>.Ok(new Cert(certPem, keyPem));
+            return new Cert(certPem, keyPem);
         }
         catch (CryptographicException ex)
         {
-            return Result<Cert>.Error(ex); ;
+            return ex;
         }
+    }
+
+    /// <summary>
+    /// Get Issuer
+    /// </summary>
+    /// <returns></returns>
+    public string GetIssuer()
+    {
+        return _cert.GetNameInfo(X509NameType.SimpleName, true);
+    }
+
+    /// <summary>
+    /// Get Subject
+    /// </summary>
+    /// <returns></returns>
+    public string GetSubject()
+    {
+        return _cert.GetNameInfo(X509NameType.SimpleName, false);
+    }
+
+    /// <summary>
+    /// Get all dns
+    /// </summary>
+    /// <returns></returns>
+    public string[] GetDNSNames()
+    {
+        var ext = _cert.Extensions["2.5.29.17"];
+
+        if (ext is null)
+            return new[] { _cert.GetNameInfo(X509NameType.DnsName, false) };
+
+        return ext.Format(true).Replace("DNS Name=", "").Trim().Split(Environment.NewLine);
+    }
+
+    public static bool operator ==(Cert left, Cert right)
+    {
+        return left.GetSubject() == right.GetSubject();
+    }
+
+    public static bool operator !=(Cert left, Cert right)
+    {
+        return !(left == right);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Cert cert &&
+               GetSubject() == cert.GetSubject();
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(GetSubject());
     }
 }

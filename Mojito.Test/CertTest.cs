@@ -109,7 +109,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();
-        var cn = cert.IssuerCN();
+        var cn = cert.GetIssuer();
         Assert.That(cn, Is.EqualTo("TrustAsia TLS RSA CA"));
     }
 
@@ -120,7 +120,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();
-        var subject = cert.Subject();
+        var subject = cert.GetSubject();
         Assert.That(subject, Is.EqualTo("www.fuxianlei.cn"));
     }
 
@@ -132,7 +132,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
         Assert.That(result.Success, Is.True);
 
         var cert = result.GetOk();
-        var dnsNames = cert.DNSNames();
+        var dnsNames = cert.GetDNSNames();
         Assert.That(dnsNames, Is.EqualTo(expect));
     }
 }
