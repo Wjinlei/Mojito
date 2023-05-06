@@ -95,32 +95,41 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
 -----END RSA PRIVATE KEY-----
 ";
 
-    [Test]
-    public void TestCreate()
+    private Cert _cert1;
+    private Cert _cert2;
+
+    [SetUp]
+    public void SetUp()
     {
-        var result = Cert.Create(PEM, KEY);
-        Assert.That(result.Success, Is.True);
+        var result1 = Cert.Create(PEM, KEY);
+        var result2 = Cert.Create(PEM, KEY);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result1.Success, Is.True);
+            Assert.That(result2.Success, Is.True);
+        });
+
+        _cert1 = result1.GetOk();
+        _cert2 = result2.GetOk();
+    }
+
+    [Test]
+    public void TestOperator()
+    {
+        Assert.That(_cert1, Is.EqualTo(_cert2));
     }
 
     [Test]
     public void TestIssuerCN()
     {
-        var result = Cert.Create(PEM, KEY);
-        Assert.That(result.Success, Is.True);
-
-        var cert = result.GetOk();
-        var cn = cert.GetIssuer();
+        var cn = _cert1.GetIssuer();
         Assert.That(cn, Is.EqualTo("TrustAsia TLS RSA CA"));
     }
 
     [Test]
     public void TestSubject()
     {
-        var result = Cert.Create(PEM, KEY);
-        Assert.That(result.Success, Is.True);
-
-        var cert = result.GetOk();
-        var subject = cert.GetSubject();
+        var subject = _cert1.GetSubject();
         Assert.That(subject, Is.EqualTo("www.fuxianlei.cn"));
     }
 
@@ -128,11 +137,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     public void TestDNSNames()
     {
         var expect = new[] { "www.fuxianlei.cn", "fuxianlei.cn" };
-        var result = Cert.Create(PEM, KEY);
-        Assert.That(result.Success, Is.True);
-
-        var cert = result.GetOk();
-        var dnsNames = cert.GetDNSNames();
+        var dnsNames = _cert1.GetDNSNames();
         Assert.That(dnsNames, Is.EqualTo(expect));
     }
 }

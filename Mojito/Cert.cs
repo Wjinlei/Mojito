@@ -87,8 +87,7 @@ public class Cert
 
     public override bool Equals(object? obj)
     {
-        return obj is Cert cert &&
-               GetSubject() == cert.GetSubject();
+        return obj is Cert cert && this == cert;
     }
 
     public override int GetHashCode()
