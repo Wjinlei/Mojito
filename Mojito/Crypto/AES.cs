@@ -137,14 +137,14 @@ public static class AES
 
     public static Result<string> GbkAesDecryptFromHex(string hex, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
-        var encrypted = Convert.HexToBytes(hex);
+        var encrypted = System.Convert.FromHexString(hex);
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         return AesDecrypt(encrypted, key, cipherMode, paddingMode, Encoding.GetEncoding("GBK"));
     }
 
     public static Result<string> Utf8AesDecryptFromHex(string hex, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
-        var encrypted = Convert.HexToBytes(hex);
+        var encrypted = System.Convert.FromHexString(hex);
         return AesDecrypt(encrypted, key, cipherMode, paddingMode, Encoding.UTF8);
     }
 }

@@ -64,12 +64,4 @@ public class ConvertTest
             Assert.That(result.GetOk(), Is.EqualTo(utf8Bytes));
         });
     }
-
-    [Test]
-    public void TestHexToBytes()
-    {
-        var hex = "25EB8D9F60D78F95486D103234AEBF09";
-        var bytes = Convert.HexToBytes(hex);
-        Assert.That(bytes, Is.EqualTo(new byte[] { 37, 235, 141, 159, 96, 215, 143, 149, 72, 109, 16, 50, 52, 174, 191, 9 }));
-    }
 }

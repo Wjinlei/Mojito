@@ -70,7 +70,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return ex;
+            return Result<string>.Error(ex);
         }
     }
 
@@ -87,7 +87,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return ex;
+            return Result<byte[]>.Error(ex);
         }
     }
 
@@ -108,7 +108,7 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return ex;
+            return Result <string>.Error(ex);
         }
     }
 
@@ -125,25 +125,8 @@ public static class Convert
         }
         catch (Exception ex)
         {
-            return ex;
+            return Result < byte[]>.Error(ex);
         }
-    }
-
-    /// <summary>
-    /// Hexadecimal string to byte[] array<br/>
-    /// https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/types/how-to-convert-between-hexadecimal-strings-and-numeric-types
-    /// </summary>
-    /// <param name="hexString">Hexadecimal character</param>
-    /// <returns></returns>
-    public static byte[] HexToBytes(string hexString)
-    {
-        byte[] byteArray = new byte[hexString.Length / 2];
-        for (var i = 0; i < byteArray.Length; i++)
-        {
-            var hexChar = hexString.Substring(i * 2, 2);
-            byteArray[i] = (byte)System.Convert.ToInt32(hexChar, 16);
-        }
-        return byteArray;
     }
 
     /// <summary>
