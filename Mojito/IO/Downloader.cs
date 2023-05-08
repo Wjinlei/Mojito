@@ -5,24 +5,9 @@ namespace Mojito.IO;
 public class Downloader
 {
     private readonly HttpClient HttpClient;
-    public string Savepath { get; set; }
-    public string Url { get; set; }
     public int ThreadCount { get; set; }
-
-    /// <summary>
-    /// Single-threaded file download, automatically gets the file name portion of the URL as the file name to save
-    /// </summary>
-    /// <param name="url">Download Url</param>
-    public Downloader(string url)
-    {
-        Url = url;
-        Savepath = Path.GetFileName(url);
-        ThreadCount = 1;
-        HttpClient = new HttpClient
-        {
-            Timeout = TimeSpan.FromMinutes(5)
-        };
-    }
+    public string Url { get; set; }
+    public string SavePath { get; set; }
 
     /// <summary>
     /// Single-threaded file download, and custom save file name
@@ -31,24 +16,8 @@ public class Downloader
     public Downloader(string url, string savePath)
     {
         Url = url;
-        Savepath = savePath;
+        SavePath = savePath;
         ThreadCount = 1;
-        HttpClient = new HttpClient
-        {
-            Timeout = TimeSpan.FromMinutes(5)
-        };
-    }
-
-    /// <summary>
-    /// Multithreaded file download, automatically get URL file name portion saved as file name
-    /// </summary>
-    /// <param name="url">Download Url</param>
-    /// <param name="threadCount">Thread Count</param>
-    public Downloader(string url, int threadCount)
-    {
-        Url = url;
-        Savepath = Path.GetFileName(url);
-        ThreadCount = threadCount;
         HttpClient = new HttpClient
         {
             Timeout = TimeSpan.FromMinutes(5)
@@ -64,11 +33,29 @@ public class Downloader
     public Downloader(string url, string savePath, int threadCount)
     {
         Url = url;
-        Savepath = savePath;
+        SavePath = savePath;
         ThreadCount = threadCount;
         HttpClient = new HttpClient
         {
             Timeout = TimeSpan.FromMinutes(5)
+        };
+    }
+
+    /// <summary>
+    /// Multithreaded file download, custom save file name and timeout
+    /// </summary>
+    /// <param name="url">Download Url</param>
+    /// <param name="savePath">Save Path</param>
+    /// <param name="threadCount">Thread Count</param>
+    /// <param name="timeout">Timeout</param>
+    public Downloader(string url, string savePath, int threadCount, TimeSpan timeout)
+    {
+        Url = url;
+        SavePath = savePath;
+        ThreadCount = threadCount;
+        HttpClient = new HttpClient
+        {
+            Timeout = timeout
         };
     }
 
@@ -94,7 +81,7 @@ public class Downloader
 
             // Create the same size file to occupy the location
             var fileMode = overwrite ? FileMode.Create : FileMode.CreateNew;
-            using (var fs = new FileStream(Savepath, fileMode))
+            using (var fs = new FileStream(SavePath, fileMode))
             {
                 fs.SetLength(fileSize);
             }
@@ -108,17 +95,19 @@ public class Downloader
                 if (i == ThreadCount - 1)
                     to = fileSize - 1;
                 // Add task
-                tasksDownloadRange.Add(DownloadRange(from, to));
+                tasksDownloadRange.Add(DownloadPart(from, to));
             }
 
             // Wait for all tasks to finish and collect return values
             var results = Task.WhenAll(tasksDownloadRange);
 
+            // Check the result set for errors
             foreach (var result in results.Result)
             {
                 if (!result.Success)
                     return result;
             }
+
             return Result.Ok;
         }
         catch (Exception ex)
@@ -133,14 +122,14 @@ public class Downloader
     /// <param name="from">The position at which to start sending data.</param>
     /// <param name="to">The position at which to stop sending data.</param>
     /// <returns></returns>
-    private Task<Result> DownloadRange(long from, long to)
+    private Task<Result> DownloadPart(long from, long to)
     {
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get, Url);
             request.Headers.Range = new RangeHeaderValue(from, to);
             var response = HttpClient.Send(request);
-            using (var fileStream = new FileStream(Savepath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
+            using (var fileStream = new FileStream(SavePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
             {
                 using var stream = response.Content.ReadAsStream();
                 fileStream.Position = from;
