@@ -48,7 +48,8 @@ public class EncodingTest
     [Test]
     public void TestGbkToUtf8()
     {
-        var result = Mojito.Convert.Encoding.GbkToUtf8(new byte[] { 72, 101, 108, 108, 111, 32, 214, 208, 185, 250, 33 });
+        var result = Mojito.Convert.Encoding.GbkToUtf8(
+            new byte[] { 72, 101, 108, 108, 111, 32, 214, 208, 185, 250, 33 });
         Assert.That(result.Success, Is.True);
         var text = Mojito.Convert.Encoding.Utf8(result.GetOk());
         Assert.That(text, Is.EqualTo("Hello 中国!"));
