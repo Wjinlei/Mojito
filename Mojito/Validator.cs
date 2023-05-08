@@ -124,23 +124,13 @@ public static class Validator
     }
 
     /// <summary>
-    /// Verify that a given string is in url
+    /// Verify that a given string is in uri
     /// </summary>
-    /// <param name="url">String</param>
+    /// <param name="uri">String</param>
     /// <returns></returns>
-    public static bool IsURL(string url)
+    public static bool IsUri(string uri)
     {
-        return IsMatch(url, @"^((https?|ftp|file):\/\/)?([\da-z.-]+)\.([a-z]{2,6})([\/\w.-]*)*\/?$");
-    }
-
-    /// <summary>
-    /// Verify that a given string is in domain
-    /// </summary>
-    /// <param name="domain">String</param>
-    /// <returns></returns>
-    public static bool IsDomain(string domain)
-    {
-        return IsMatch(domain, @"^([0-9a-zA-Z-]{1,}\.)+([a-zA-Z]{2,})$");
+        return Uri.TryCreate(uri, UriKind.Absolute, out Uri? _);
     }
 
     /// <summary>
