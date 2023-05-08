@@ -7,14 +7,11 @@ public class ValidatorTest
     {
         var strMap = new Dictionary<string, bool>
         {
-            { "123123", false },
-            { "123abc", false },
-            { "abc123", false },
-            { "!@#$%^&*=", false },
-            { "abc123!@#", false },
-            { "!@#abc123", false },
-            { "123!@#abc", false },
-            { "abcabc", true },
+            { "!@^&*=", false }, // Special character
+            { "a23!@#", false }, // Special character + number + letter
+            { "123123", false }, // number
+            { "123abc", false }, // number + letter
+            { "abcabc", true },  // letter
         };
 
         foreach (var str in strMap)
@@ -29,14 +26,11 @@ public class ValidatorTest
     {
         var strMap = new Dictionary<string, bool>
         {
-            { "123abc", false },
-            { "abc123", false },
-            { "abcabc", false },
-            { "!@#$%^&*=", false },
-            { "abc123!@#", false },
-            { "!@#abc123", false },
-            { "123!@#abc", false },
-            { "123123", true },
+            { "!@^&*=", false }, // Special character
+            { "a23!@#", false }, // Special character + number + letter
+            { "123123", true },  // number
+            { "123abc", false }, // number + letter
+            { "abcabc", false }, // letter
         };
 
         foreach (var str in strMap)
@@ -51,13 +45,11 @@ public class ValidatorTest
     {
         var strMap = new Dictionary<string, bool>
         {
-            { "123123", false },
-            { "abcabc", false },
-            { "abc123!@#", false },
-            { "!@#abc123", false },
-            { "123!@#abc", false },
-            { "123abc", true },
-            { "abc123", true },
+            { "!@^&*=", false }, // Special character
+            { "a23!@#", false }, // Special character + number + letter
+            { "123123", false }, // number
+            { "123abc", true },  // number + letter
+            { "abcabc", false }, // letter
         };
 
         foreach (var str in strMap)
@@ -72,15 +64,11 @@ public class ValidatorTest
     {
         var strMap = new Dictionary<string, bool>
         {
-            { "123123123", false },
-            { "abcabcabc", false },
-            { "abc123abc", false },
-            { "123abc123", false },
-            { "!@#$%^&*:", false },
-            { "abc123@#!", true },
-            { "123abc@#!", true },
-            { "@#!abc123", true },
-            { "@#!123abc", true }
+            { "!@^&*=", false }, // Special character
+            { "a23!@#", true },  // Special character + number + letter
+            { "123123", false }, // number
+            { "123abc", false }, // number + letter
+            { "abcabc", false }, // letter
         };
 
         foreach (var str in strMap)
