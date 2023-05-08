@@ -6,16 +6,6 @@ namespace Mojito;
 public static class Validator
 {
     /// <summary>
-    /// Verify that the given string is email
-    /// </summary>
-    /// <param name="email">String</param>
-    /// <returns></returns>
-    public static bool IsEmail(string email)
-    {
-        return IsMatch(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
-    }
-
-    /// <summary>
     /// Verify that the given string is a pure letter
     /// </summary>
     /// <param name="letter">String</param>
@@ -156,6 +146,16 @@ public static class Validator
     public static bool IsPhoneNumber(string number)
     {
         return IsMatch(number, @"^1\d{10}$");
+    }
+
+    /// <summary>
+    /// Verify that the given string is email
+    /// </summary>
+    /// <param name="email">String</param>
+    /// <returns></returns>
+    public static bool IsEmail(string email)
+    {
+        return IsMatch(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
     }
 
     /// <summary>
