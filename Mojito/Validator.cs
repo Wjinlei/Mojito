@@ -124,6 +124,16 @@ public static class Validator
     }
 
     /// <summary>
+    /// Verify that a given string is in url
+    /// </summary>
+    /// <param name="url">String</param>
+    /// <returns></returns>
+    public static bool IsUrl(string url)
+    {
+        return IsMatch(url, @"^([\da-zA-Z-]{1,}\.)+([a-zA-Z]{2,})$");
+    }
+
+    /// <summary>
     /// Verify that a given string is in ip address[:port]
     /// </summary>
     /// <param name="ipAddr">String</param>

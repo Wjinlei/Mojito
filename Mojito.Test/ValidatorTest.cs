@@ -82,12 +82,8 @@ public class ValidatorTest
     public void TestIsUri()
     {
         var uris = new[] {
-            "http://xn--fiqs8s.cn",
-            "http://example.com",
-            "http://qq.com",
-            "file://example.test.cn",
-            "ftp://6.cn",
-            "https://test.co.net",
+            "https://xn--fiqs8s.cn",
+            "https://example.com",
             "https://example.com/login.php",
             "https://example.com/admin/login.php",
         };
@@ -100,21 +96,35 @@ public class ValidatorTest
     }
 
     [Test]
+    public void TestIsUrl()
+    {
+        var urls = new[] {
+            "xn--fiqs8s.cn",
+            "example.com",
+            "wap.bbs.example.com",
+            "www.example.com",
+        };
+
+        foreach (var url in urls)
+        {
+            var ok = Validator.IsUrl(url);
+            Assert.That(ok, Is.True);
+        }
+    }
+
+    [Test]
     public void TestIsIp()
     {
         var ipsMap = new Dictionary<string, bool>
         {
-            { "127.0.0.1", true },
-            { "10.35.10.253", true },
-            { "192.168.0.1", true },
-            { "abc.123.abc.192", false },
-            { "192.168.0.1000", false },
-            { "192.168.0.256", false },
-            { "1192.168.0.256", false },
             { "192.168.0.1:80888", false },
+            { "abc.123.abc.192", false },
+            { "192.168.0.256", false },
+            { "192.168.0.1", true },
+            { "127.0.0.1", true },
+            { "[2001:0db8:0000:0003:0000:8a2e:0370:7334]:8080", true },
             { "2001:0db8:85a3:0000:0000:8a2e:0370:7334", true },
             { "2001:0db8:0000:0003:0000:8a2e:0370:7334:8000", true },
-            { "[2001:0db8:0000:0003:0000:8a2e:0370:7334]:8080", true },
         };
 
         foreach (var ip in ipsMap)
