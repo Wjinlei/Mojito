@@ -21,7 +21,6 @@ public class EncodingTest
     [Test]
     public void TestGbkGetBytes()
     {
-
         var bytes = Mojito.Convert.Encoding.GbkGetBytes("Hello 中国!");
         Assert.That(bytes, Is.EqualTo(
             new byte[] { 72, 101, 108, 108, 111, 32, 214, 208, 185, 250, 33 }));
