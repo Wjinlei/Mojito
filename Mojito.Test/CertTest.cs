@@ -95,22 +95,25 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
 -----END RSA PRIVATE KEY-----
 ";
 
-    private Cert _cert1;
-    private Cert _cert2;
+    private Cert? _cert1;
+    private Cert? _cert2;
 
     [SetUp]
     public void SetUp()
     {
         var result1 = Cert.Create(PEM, KEY);
         var result2 = Cert.Create(PEM, KEY);
+
+        if (result1.Success)
+            _cert1 = result1.GetOk();
+        if (result2.Success)
+            _cert2 = result2.GetOk();
+
         Assert.Multiple(() =>
         {
             Assert.That(result1.Success, Is.True);
             Assert.That(result2.Success, Is.True);
         });
-
-        _cert1 = result1.GetOk();
-        _cert2 = result2.GetOk();
     }
 
     [Test]
@@ -122,14 +125,14 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     [Test]
     public void TestIssuerCN()
     {
-        var cn = _cert1.GetIssuer();
+        var cn = _cert1?.GetIssuer();
         Assert.That(cn, Is.EqualTo("TrustAsia TLS RSA CA"));
     }
 
     [Test]
     public void TestSubject()
     {
-        var subject = _cert1.GetSubject();
+        var subject = _cert1?.GetSubject();
         Assert.That(subject, Is.EqualTo("www.fuxianlei.cn"));
     }
 
@@ -137,7 +140,7 @@ kaDWfDYlFo7G45IQCsMCnpMB07yU6WCYw3XYDUubcaeSKEFYY5Jy
     public void TestDNSNames()
     {
         var expect = new[] { "www.fuxianlei.cn", "fuxianlei.cn" };
-        var dnsNames = _cert1.GetDNSNames();
+        var dnsNames = _cert1?.GetDNSNames();
         Assert.That(dnsNames, Is.EqualTo(expect));
     }
 }
