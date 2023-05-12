@@ -31,8 +31,7 @@ public static class Uri
     /// <returns></returns>
     private static Result<System.Uri> Parse(string uri)
     {
-        bool isTrue = System.Uri.TryCreate(
-            uri, UriKind.Absolute, out System.Uri? uriResult);
+        bool isTrue = System.Uri.TryCreate(uri, UriKind.Absolute, out System.Uri? uriResult);
 
         return isTrue && uriResult != null
             ? uriResult : new UriFormatException(nameof(uri));
