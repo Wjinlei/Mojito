@@ -2,6 +2,18 @@
 
 namespace Mojito;
 
+public class CmdResult
+{
+    public string Output;
+    public string Error;
+
+    public CmdResult(string output, string error)
+    {
+        Output = output;
+        Error = error;
+    }
+}
+
 public static class Cmd
 {
     /// <summary>
@@ -9,7 +21,8 @@ public static class Cmd
     /// </summary>
     /// <param name="cmd">Command text</param>
     /// <returns></returns>
-    public static Result<string> Execute(string cmd)
+    /// <exception cref="PlatformNotSupportedException"></exception>
+    public static CmdResult Execute(string cmd)
     {
         using var compiler = new Process();
 
@@ -22,9 +35,8 @@ public static class Cmd
                 compiler.StartInfo.FileName = "bash";
                 break;
             default:
-                return Result<string>.Error(
-                    new PlatformNotSupportedException(
-                        $"Unsupported operating system: {Environment.OSVersion}."));
+                throw new PlatformNotSupportedException(
+                        $"Unsupported operating system: {Environment.OSVersion}.");
         }
 
         compiler.StartInfo.RedirectStandardInput = true;
@@ -32,24 +44,17 @@ public static class Cmd
         compiler.StartInfo.RedirectStandardError = true;
         compiler.StartInfo.CreateNoWindow = true;
 
-        try
-        {
-            compiler.StartInfo.UseShellExecute = false; // UWP is set to true PlatformNotSupportedException will happen
-            compiler.Start();
-            compiler.StandardInput.WriteLine(cmd + "&exit");
-            compiler.StandardInput.AutoFlush = true;
 
-            var output = compiler.StandardOutput.ReadToEnd();
-            var error = compiler.StandardError.ReadToEnd();
+        compiler.StartInfo.UseShellExecute = false; // UWP is set to true PlatformNotSupportedException will happen
+        compiler.Start();
+        compiler.StandardInput.WriteLine(cmd + "&exit");
+        compiler.StandardInput.AutoFlush = true;
 
-            compiler.WaitForExit();
-            if (error != "")
-                return Result<string>.Error(new Exception(error));
-            return Result<string>.Ok(output);
-        }
-        catch (Exception ex)
-        {
-            return Result<string>.Error(ex);
-        }
+        var output = compiler.StandardOutput.ReadToEnd();
+        var error = compiler.StandardError.ReadToEnd();
+
+        compiler.WaitForExit();
+
+        return new CmdResult(output, error);
     }
 }
