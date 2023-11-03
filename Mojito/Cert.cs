@@ -1,5 +1,4 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography;
 
 namespace Mojito;
 
@@ -12,35 +11,9 @@ public class Cert
     /// </summary>
     /// <param name="certPem">Certificate pem string</param>
     /// <param name="keyPem">Key pem string</param>
-    /// <exception cref="CryptographicException"></exception>
-    private Cert(string certPem, string keyPem)
+    public Cert(string certPem, string keyPem)
     {
-        try
-        {
-            _cert = X509Certificate2.CreateFromPem(certPem, keyPem);
-        }
-        catch (CryptographicException)
-        {
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Parses and creates certificate objects using pem strings
-    /// </summary>
-    /// <param name="certPem">Certificate pem string</param>
-    /// <param name="keyPem">Key pem string</param>
-    /// <returns></returns>
-    public static Result<Cert> Create(string certPem, string keyPem)
-    {
-        try
-        {
-            return new Cert(certPem, keyPem);
-        }
-        catch (CryptographicException ex)
-        {
-            return ex;
-        }
+        _cert = X509Certificate2.CreateFromPem(certPem, keyPem);
     }
 
     /// <summary>
@@ -65,14 +38,14 @@ public class Cert
     /// Get all dns
     /// </summary>
     /// <returns></returns>
-    public string[] GetDNSNames()
+    public string[] GetBinds()
     {
         var ext = _cert.Extensions["2.5.29.17"];
-
         if (ext is null)
             return new[] { _cert.GetNameInfo(X509NameType.DnsName, false) };
 
-        return ext.Format(true).Replace("DNS Name=", "").Trim().Split(Environment.NewLine);
+        return ext.Format(true).Replace("DNS Name=", "")
+            .Trim().Split(Environment.NewLine);
     }
 
     public static bool operator ==(Cert left, Cert right)
