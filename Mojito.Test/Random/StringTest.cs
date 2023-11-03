@@ -38,7 +38,7 @@ public class StringTest
     public void TestCreate()
     {
         var result = Mojito.Random.String.Create("123abc", 10);
-        TestContext.Out.WriteLine(result.GetOk());
-        Assert.That(result.Success, Is.True);
+        TestContext.Out.WriteLine(result);
+        Assert.Pass();
     }
 }

@@ -11,10 +11,7 @@ public static class String
     /// <returns></returns>
     public static string Letters(uint length)
     {
-        var result = Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
-        if (!result.Success)
-            return "";
-        return result.GetOk();
+        return Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
     }
 
     /// <summary>
@@ -24,10 +21,7 @@ public static class String
     /// <returns></returns>
     public static string Numbers(uint length)
     {
-        var result = Create("0123456789", length);
-        if (!result.Success)
-            return "";
-        return result.GetOk();
+        return Create("0123456789", length);
     }
 
     /// <summary>
@@ -37,10 +31,7 @@ public static class String
     /// <returns></returns>
     public static string CombinationOfLettersAndNumbers(uint length)
     {
-        var result = Create("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
-        if (!result.Success)
-            return "";
-        return result.GetOk();
+        return Create("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
     }
 
     /// <summary>
@@ -50,10 +41,7 @@ public static class String
     /// <returns></returns>
     public static string Complex(uint length)
     {
-        var result = Create("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@#$%^&*()+=,.<>:;{}[]?/", length);
-        if (!result.Success)
-            return "";
-        return result.GetOk();
+        return Create("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@#$%^&*()+=,.<>:;{}[]?/", length);
     }
 
     /// <summary>
@@ -62,19 +50,9 @@ public static class String
     /// <param name="seed">Random seed</param>
     /// <param name="length">The length of a random string generated</param>
     /// <returns></returns>
-    public static Result<string> Create(string seed, uint length)
+    public static string Create(string seed, uint length)
     {
-        try
-        {
-            var randomString = new string(Enumerable.Repeat(seed, (int)length)
-                .Select(s => s[Rnd.Next(s.Length)]).ToArray());
-            return Result<string>.Ok(randomString);
-        }
-        catch
-        {
-            return Result<string>.Error(
-                new InvalidOperationException("The seed cannot be empty.")
-                );
-        }
+        return new string(Enumerable.Repeat(seed, (int)length)
+            .Select(s => s[Rnd.Next(s.Length)]).ToArray());
     }
 }
