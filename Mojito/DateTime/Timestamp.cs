@@ -7,7 +7,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToHour(long timestamp)
+    public static string ToHour(long timestamp)
     {
         return Parse(timestamp, "HH");
     }
@@ -17,7 +17,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToMinute(long timestamp)
+    public static string ToMinute(long timestamp)
     {
         return Parse(timestamp, "mm");
     }
@@ -27,7 +27,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToSecond(long timestamp)
+    public static string ToSecond(long timestamp)
     {
         return Parse(timestamp, "ss");
     }
@@ -37,7 +37,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToTime(long timestamp)
+    public static string ToTime(long timestamp)
     {
         return Parse(timestamp, "HH:mm:ss");
     }
@@ -47,7 +47,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToYear(long timestamp)
+    public static string ToYear(long timestamp)
     {
         return Parse(timestamp, "yyyy");
     }
@@ -57,7 +57,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToMonth(long timestamp)
+    public static string ToMonth(long timestamp)
     {
         return Parse(timestamp, "MM");
     }
@@ -67,7 +67,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToDay(long timestamp)
+    public static string ToDay(long timestamp)
     {
         return Parse(timestamp, "dd");
     }
@@ -77,7 +77,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToDate(long timestamp)
+    public static string ToDate(long timestamp)
     {
         return Parse(timestamp, "yyyy-MM-dd");
     }
@@ -87,7 +87,7 @@ public static class Timestamp
     /// </summary>
     /// <param name="timestamp">Unix timestamp</param>
     /// <returns></returns>
-    public static Result<string> ToDateTime(long timestamp)
+    public static string ToDateTime(long timestamp)
     {
         return Parse(timestamp, "yyyy-MM-dd HH:mm:ss");
     }
@@ -98,18 +98,10 @@ public static class Timestamp
     /// <param name="timestamp">Unix timestamp</param>
     /// <param name="format">Time format string</param>
     /// <returns></returns>
-    public static Result<string> Parse(long timestamp, string format)
+    public static string Parse(long timestamp, string format)
     {
-        try
-        {
-            var startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Utc, TimeZoneInfo.Local);
-            var dateTime = startTime.AddSeconds(timestamp);
-            var time = dateTime.ToString(format);
-            return Result<string>.Ok(time);
-        }
-        catch (Exception ex)
-        {
-            return Result<string>.Error(ex);
-        }
+        var startTime = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Utc, TimeZoneInfo.Local);
+        var dateTime = startTime.AddSeconds(timestamp);
+        return dateTime.ToString(format);
     }
 }
