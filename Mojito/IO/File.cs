@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Mojito.IO;
+﻿namespace Mojito.IO;
 
 public static class File
 {
@@ -9,7 +7,7 @@ public static class File
     /// </summary>
     /// <param name="path">The path and name of the file to create.</param>
     /// <returns></returns>
-    public static Result Create(string path)
+    public static FileStream Create(string path)
     {
         return Create(path, FileMode.CreateNew);
     }
@@ -20,17 +18,9 @@ public static class File
     /// <param name="path">The path and name of the file to create.</param>
     /// <param name="fileMode">One of the enumeration values that determines how to open or create the file. <see cref="FileMode"/></param>
     /// <returns></returns>
-    public static Result Create(string path, FileMode fileMode)
+    public static FileStream Create(string path, FileMode fileMode)
     {
-        try
-        {
-            using var fs = new FileStream(path, fileMode);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        return new FileStream(path, fileMode);
     }
 
     /// <summary>
@@ -39,17 +29,9 @@ public static class File
     /// <param name="path">The path where the symbolic link should be created.</param>
     /// <param name="pathToTarget">The path of the target to which the symbolic link points.</param>
     /// <returns></returns>
-    public static Result CreateSymbolicLink(string path, string pathToTarget)
+    public static FileSystemInfo CreateSymbolicLink(string path, string pathToTarget)
     {
-        try
-        {
-            System.IO.File.CreateSymbolicLink(path, pathToTarget);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        return System.IO.File.CreateSymbolicLink(path, pathToTarget);
     }
 
     /// <summary>
@@ -57,17 +39,9 @@ public static class File
     /// </summary>
     /// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
     /// <returns></returns>
-    public static Result Delete(string path)
+    public static void Delete(string path)
     {
-        try
-        {
-            System.IO.File.Delete(path);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.Delete(path);
     }
 
     /// <summary>
@@ -76,9 +50,9 @@ public static class File
     /// <param name="srcPath">The name of the file to move. Can include a relative or absolute path.</param>
     /// <param name="newPath">The new path and name for the file.</param>
     /// <returns></returns>
-    public static Result Move(string srcPath, string newPath)
+    public static void Move(string srcPath, string newPath)
     {
-        return Move(srcPath, newPath, false);
+        Move(srcPath, newPath, false);
     }
 
     /// <summary>
@@ -88,17 +62,9 @@ public static class File
     /// <param name="newPath">The new path and name for the file.</param>
     /// <param name="overwrite">true to overwrite the destination file if it already exists; false otherwise.</param>
     /// <returns></returns>
-    public static Result Move(string srcPath, string newPath, bool overwrite)
+    public static void Move(string srcPath, string newPath, bool overwrite)
     {
-        try
-        {
-            System.IO.File.Move(srcPath, newPath, overwrite);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.Move(srcPath, newPath, overwrite);
     }
 
     /// <summary>
@@ -107,9 +73,9 @@ public static class File
     /// <param name="srcPath">The file to copy.</param>
     /// <param name="newPath">The name of the destination file. This cannot be a directory or an existing file.</param>
     /// <returns></returns>
-    public static Result Copy(string srcPath, string newPath)
+    public static void Copy(string srcPath, string newPath)
     {
-        return Copy(srcPath, newPath, false);
+        Copy(srcPath, newPath, false);
     }
 
     /// <summary>
@@ -119,17 +85,9 @@ public static class File
     /// <param name="destPath">The name of the destination file. This cannot be a directory.</param>
     /// <param name="overwrite">true if the destination file can be overwritten; otherwise, false.</param>
     /// <returns></returns>
-    public static Result Copy(string srcPath, string destPath, bool overwrite)
+    public static void Copy(string srcPath, string destPath, bool overwrite)
     {
-        try
-        {
-            System.IO.File.Copy(srcPath, destPath, overwrite);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.Copy(srcPath, destPath, overwrite);
     }
 
     /// <summary>
@@ -137,9 +95,9 @@ public static class File
     /// </summary>
     /// <param name="path">The file to open for reading.</param>
     /// <returns></returns>
-    public static Result<string> ReadAllText(string path)
+    public static string ReadAllText(string path)
     {
-        return ReadAllText(path, Encoding.UTF8);
+        return ReadAllText(path, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -148,17 +106,9 @@ public static class File
     /// <param name="path">The file to open for reading.</param>
     /// <param name="encoding">The encoding applied to the contents of the file.</param>
     /// <returns></returns>
-    public static Result<string> ReadAllText(string path, Encoding encoding)
+    public static string ReadAllText(string path, System.Text.Encoding encoding)
     {
-        try
-        {
-            var content = System.IO.File.ReadAllText(path, encoding);
-            return Result<string>.Ok(content);
-        }
-        catch (Exception ex)
-        {
-            return Result<string>.Error(ex);
-        }
+        return System.IO.File.ReadAllText(path, encoding);
     }
 
     /// <summary>
@@ -166,9 +116,9 @@ public static class File
     /// </summary>
     /// <param name="path">The file to read.</param>
     /// <returns></returns>
-    public static Result<IEnumerable<string>> ReadLines(string path)
+    public static IEnumerable<string> ReadLines(string path)
     {
-        return ReadLines(path, Encoding.UTF8);
+        return ReadLines(path, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -177,17 +127,9 @@ public static class File
     /// <param name="path">The file to read.</param>
     /// <param name="encoding">The encoding that is applied to the contents of the file.</param>
     /// <returns></returns>
-    public static Result<IEnumerable<string>> ReadLines(string path, Encoding encoding)
+    public static IEnumerable<string> ReadLines(string path, System.Text.Encoding encoding)
     {
-        try
-        {
-            var enumerable = System.IO.File.ReadLines(path, encoding);
-            return Result<IEnumerable<string>>.Ok(enumerable);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<string>>.Error(ex);
-        }
+        return System.IO.File.ReadLines(path, encoding);
     }
 
     /// <summary>
@@ -195,9 +137,9 @@ public static class File
     /// </summary>
     /// <param name="path">The file to open for reading.</param>
     /// <returns></returns>
-    public static Result<string[]> ReadAllLines(string path)
+    public static string[] ReadAllLines(string path)
     {
-        return ReadAllLines(path, Encoding.UTF8);
+        return ReadAllLines(path, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -206,17 +148,9 @@ public static class File
     /// <param name="path">The file to open for reading.</param>
     /// <param name="encoding">The encoding applied to the contents of the file.</param>
     /// <returns></returns>
-    public static Result<string[]> ReadAllLines(string path, Encoding encoding)
+    public static string[] ReadAllLines(string path, System.Text.Encoding encoding)
     {
-        try
-        {
-            var array = System.IO.File.ReadAllLines(path, encoding);
-            return Result<string[]>.Ok(array);
-        }
-        catch (Exception ex)
-        {
-            return Result<string[]>.Error(ex);
-        }
+        return System.IO.File.ReadAllLines(path, encoding);
     }
 
     /// <summary>
@@ -224,17 +158,9 @@ public static class File
     /// </summary>
     /// <param name="path">The file to open for reading.</param>
     /// <returns></returns>
-    public static Result<byte[]> ReadAllBytes(string path)
+    public static byte[] ReadAllBytes(string path)
     {
-        try
-        {
-            var array = System.IO.File.ReadAllBytes(path);
-            return Result<byte[]>.Ok(array);
-        }
-        catch (Exception ex)
-        {
-            return Result<byte[]>.Error(ex);
-        }
+        return System.IO.File.ReadAllBytes(path);
     }
 
     /// <summary>
@@ -243,9 +169,9 @@ public static class File
     /// <param name="path">The file to write to.</param>
     /// <param name="contents">The string to write to the file.</param>
     /// <returns></returns>
-    public static Result WriteAllText(string path, string contents)
+    public static void WriteAllText(string path, string contents)
     {
-        return WriteAllText(path, contents, Encoding.UTF8);
+        WriteAllText(path, contents, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -255,17 +181,9 @@ public static class File
     /// <param name="contents">The string to write to the file.</param>
     /// <param name="encoding">The encoding to apply to the string.</param>
     /// <returns></returns>
-    public static Result WriteAllText(string path, string contents, Encoding encoding)
+    public static void WriteAllText(string path, string contents, System.Text.Encoding encoding)
     {
-        try
-        {
-            System.IO.File.WriteAllText(path, contents, encoding);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.WriteAllText(path, contents, encoding);
     }
 
     /// <summary>
@@ -274,9 +192,9 @@ public static class File
     /// <param name="path">The file to write to.</param>
     /// <param name="lines">The string array to write to the file.</param>
     /// <returns></returns>
-    public static Result WriteAllLines(string path, string[] lines)
+    public static void WriteAllLines(string path, string[] lines)
     {
-        return WriteAllLines(path, lines, Encoding.UTF8);
+        WriteAllLines(path, lines, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -286,17 +204,9 @@ public static class File
     /// <param name="lines">The string array to write to the file.</param>
     /// <param name="encoding">An Encoding object that represents the character encoding applied to the string array.</param>
     /// <returns></returns>
-    public static Result WriteAllLines(string path, string[] lines, Encoding encoding)
+    public static void WriteAllLines(string path, string[] lines, System.Text.Encoding encoding)
     {
-        try
-        {
-            System.IO.File.WriteAllLines(path, lines, encoding);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.WriteAllLines(path, lines, encoding);
     }
 
     /// <summary>
@@ -305,17 +215,9 @@ public static class File
     /// <param name="path">The file to write to.</param>
     /// <param name="bytes">The bytes to write to the file.</param>
     /// <returns></returns>
-    public static Result WriteAllBytes(string path, byte[] bytes)
+    public static void WriteAllBytes(string path, byte[] bytes)
     {
-        try
-        {
-            System.IO.File.WriteAllBytes(path, bytes);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.WriteAllBytes(path, bytes);
     }
 
     /// <summary>
@@ -324,9 +226,9 @@ public static class File
     /// <param name="path">The file to append the specified string to.</param>
     /// <param name="contents">The string to append to the file.</param>
     /// <returns></returns>
-    public static Result AppendAllText(string path, string contents)
+    public static void AppendAllText(string path, string contents)
     {
-        return AppendAllText(path, contents, Encoding.UTF8);
+        AppendAllText(path, contents, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -336,17 +238,9 @@ public static class File
     /// <param name="contents">The string to append to the file.</param>
     /// <param name="encoding">The character encoding to use.</param>
     /// <returns></returns>
-    public static Result AppendAllText(string path, string contents, Encoding encoding)
+    public static void AppendAllText(string path, string contents, System.Text.Encoding encoding)
     {
-        try
-        {
-            System.IO.File.AppendAllText(path, contents, encoding);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.AppendAllText(path, contents, encoding);
     }
 
     /// <summary>
@@ -355,9 +249,9 @@ public static class File
     /// <param name="path">The file to append the lines to. The file is created if it doesn't already exist.</param>
     /// <param name="lines">The lines to append to the file.</param>
     /// <returns></returns>
-    public static Result AppendAllLines(string path, IEnumerable<string> lines)
+    public static void AppendAllLines(string path, IEnumerable<string> lines)
     {
-        return AppendAllLines(path, lines, Encoding.UTF8);
+        AppendAllLines(path, lines, System.Text.Encoding.UTF8);
     }
 
     /// <summary>
@@ -367,17 +261,9 @@ public static class File
     /// <param name="lines">The lines to append to the file.</param>
     /// <param name="encoding">The character encoding to use.</param>
     /// <returns></returns>
-    public static Result AppendAllLines(string path, IEnumerable<string> lines, Encoding encoding)
+    public static void AppendAllLines(string path, IEnumerable<string> lines, System.Text.Encoding encoding)
     {
-        try
-        {
-            System.IO.File.AppendAllLines(path, lines, encoding);
-            return Result.Ok;
-        }
-        catch (Exception ex)
-        {
-            return Result.Error(ex);
-        }
+        System.IO.File.AppendAllLines(path, lines, encoding);
     }
 
     /// <summary>
