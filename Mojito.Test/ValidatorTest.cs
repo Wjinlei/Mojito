@@ -79,40 +79,6 @@ public class ValidatorTest
     }
 
     [Test]
-    public void TestIsUri()
-    {
-        var uris = new[] {
-            "https://xn--fiqs8s.cn",
-            "https://example.com",
-            "https://example.com/login.php",
-            "https://example.com/admin/login.php",
-        };
-
-        foreach (var uri in uris)
-        {
-            var ok = Validator.IsUri(uri);
-            Assert.That(ok, Is.True);
-        }
-    }
-
-    [Test]
-    public void TestIsUrl()
-    {
-        var urls = new[] {
-            "xn--fiqs8s.cn",
-            "example.com",
-            "wap.bbs.example.com",
-            "www.example.com",
-        };
-
-        foreach (var url in urls)
-        {
-            var ok = Validator.IsUrl(url);
-            Assert.That(ok, Is.True);
-        }
-    }
-
-    [Test]
     public void TestIsIp()
     {
         var ipsMap = new Dictionary<string, bool>
@@ -132,28 +98,5 @@ public class ValidatorTest
             var ok = Validator.IsIp(ip.Key);
             Assert.That(ok, Is.EqualTo(ip.Value));
         }
-    }
-
-    [Test]
-    public void TestIsPhoneNumber()
-    {
-        var phoneNumbers = new[] {
-            "19119255642",
-            "17888829981",
-            "18311006933",
-        };
-
-        foreach (var phoneNumber in phoneNumbers)
-        {
-            var ok = Validator.IsPhoneNumber(phoneNumber);
-            Assert.That(ok, Is.True);
-        }
-    }
-
-    [Test]
-    public void TestIsEmail()
-    {
-        var ok = Validator.IsEmail("service@adm.net");
-        Assert.That(ok, Is.True);
     }
 }

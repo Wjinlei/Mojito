@@ -114,26 +114,6 @@ public static class Validator
     }
 
     /// <summary>
-    /// Verify that a given string is in uri
-    /// </summary>
-    /// <param name="uri">String</param>
-    /// <returns></returns>
-    public static bool IsUri(string uri)
-    {
-        return Uri.TryCreate(uri, UriKind.Absolute, out Uri? _);
-    }
-
-    /// <summary>
-    /// Verify that a given string is in url
-    /// </summary>
-    /// <param name="url">String</param>
-    /// <returns></returns>
-    public static bool IsUrl(string url)
-    {
-        return IsMatch(url, @"^([\da-zA-Z-]{1,}\.)+([a-zA-Z]{2,})$");
-    }
-
-    /// <summary>
     /// Verify that a given string is in ip address[:port]
     /// </summary>
     /// <param name="ipAddr">String</param>
@@ -146,26 +126,6 @@ public static class Validator
 
         return IPAddress.TryParse(
             Match(ipAddr, pattern).Groups[1].Value, out _);
-    }
-
-    /// <summary>
-    /// Verify that a given string is in phone number, The loosest check, as long as it starts with 1 and has 11 bits
-    /// </summary>
-    /// <param name="number">String</param>
-    /// <returns></returns>
-    public static bool IsPhoneNumber(string number)
-    {
-        return IsMatch(number, @"^1\d{10}$");
-    }
-
-    /// <summary>
-    /// Verify that the given string is email
-    /// </summary>
-    /// <param name="email">String</param>
-    /// <returns></returns>
-    public static bool IsEmail(string email)
-    {
-        return IsMatch(email, @"^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$");
     }
 
     /// <summary>
