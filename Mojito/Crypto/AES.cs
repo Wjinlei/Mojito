@@ -45,7 +45,6 @@ public static class AES
             swEncrypt.Write(plainText);
         }
 
-
         byte[] encrypted;
         encrypted = msEncrypt.ToArray();
 
