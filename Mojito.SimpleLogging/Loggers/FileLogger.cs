@@ -9,28 +9,41 @@ public class FileLogger : Logger
         logPath = path;
     }
 
-    public override void Debug(string message)
+    private static string GetMessage(string level, string message, string pattern)
     {
-        File.AppendAllText(logPath, message + Environment.NewLine);
+        return pattern.Replace("%date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+            .Replace("%level", level)
+            .Replace("%message", message)
+            .Replace("%newline", Environment.NewLine);
     }
 
-    public override void Info(string message)
+    public override void Debug(string message, string pattern)
     {
-        File.AppendAllText(logPath, message + Environment.NewLine);
+        var newMessage = GetMessage("Debug", message, pattern);
+        File.AppendAllText(logPath, newMessage);
     }
 
-    public override void Warn(string message)
+    public override void Info(string message, string pattern)
     {
-        File.AppendAllText(logPath, message + Environment.NewLine);
+        var newMessage = GetMessage("Info", message, pattern);
+        File.AppendAllText(logPath, newMessage);
     }
 
-    public override void Error(string message)
+    public override void Warn(string message, string pattern)
     {
-        File.AppendAllText(logPath, message + Environment.NewLine);
+        var newMessage = GetMessage("Warn", message, pattern);
+        File.AppendAllText(logPath, newMessage);
     }
 
-    public override void Fatal(string message)
+    public override void Error(string message, string pattern)
     {
-        File.AppendAllText(logPath, message + Environment.NewLine);
+        var newMessage = GetMessage("Error", message, pattern);
+        File.AppendAllText(logPath, newMessage);
+    }
+
+    public override void Fatal(string message, string pattern)
+    {
+        var newMessage = GetMessage("Fatal", message, pattern);
+        File.AppendAllText(logPath, newMessage);
     }
 }

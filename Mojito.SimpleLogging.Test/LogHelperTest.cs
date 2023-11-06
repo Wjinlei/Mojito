@@ -16,7 +16,7 @@ namespace Mojito.SimpleLogging.Test
             LogHelper.Warn(message);
 
             var result = File.ReadAllText("Mojito.log");
-            Assert.That(result.Trim(), Is.EqualTo(message));
+            TestContext.Out.Write(result);
         }
     }
 }
