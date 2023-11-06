@@ -13,7 +13,7 @@ namespace Mojito.SimpleLogging.Test
         public void TestFileLogger()
         {
             var message = "Hello World!";
-            LogHelper.Warn(message);
+            LogHelper.Error(message);
 
             var result = File.ReadAllText("Mojito.log");
             TestContext.Out.Write(result);

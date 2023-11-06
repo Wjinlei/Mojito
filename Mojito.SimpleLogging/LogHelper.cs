@@ -22,25 +22,25 @@ public static class LogHelper
 
     private static Logger? GetLogger(LogLevel currentLevel)
     {
-        var target = configuration["logging:target"];
-        var level = configuration["logging:level"];
-        var file = configuration["logging:file"] ??= "Mojito.log";
-        pattern = configuration["logging:pattern"] ??= "%date %level %message%newline";
+        var target = configuration["logging:target:value"] ??= "File";
+        var level = configuration["logging:level:value"] ??= "Info";
+        var file = configuration["logging:file:value"] ??= "Mojito.log";
+        pattern = configuration["logging:pattern:value"] ??= "%date %level %message%newline";
 
-        Logger logger = target switch
+        Logger logger = target.ToLower() switch
         {
-            "Console" => consoleLogger,
-            "File" => new FileLogger(file), // 这里每次写日志都new一个对象我感觉不太好，得想办法优化下。
+            "console" => consoleLogger,
+            "file" => new FileLogger(file), // 这里每次写日志都new一个对象我感觉不太好，得想办法优化下。
             _ => consoleLogger,
         };
 
-        return level switch
+        return level.ToLower() switch
         {
-            "Debug" => logger,
-            "Info" => currentLevel > LogLevel.Debug ? logger : null,
-            "Warn" => currentLevel > LogLevel.Info ? logger : null,
-            "Error" => currentLevel > LogLevel.Warn ? logger : null,
-            "Fatal" => currentLevel > LogLevel.Error ? logger : null,
+            "debug" => logger,
+            "info" => currentLevel > LogLevel.Debug ? logger : null,
+            "warn" => currentLevel > LogLevel.Info ? logger : null,
+            "error" => currentLevel > LogLevel.Warn ? logger : null,
+            "fatal" => currentLevel > LogLevel.Error ? logger : null,
             _ => logger,
         };
     }
