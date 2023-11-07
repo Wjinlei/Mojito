@@ -25,12 +25,14 @@ public static class LogHelper
         var target = configuration["logging:target:value"] ??= "File";
         var level = configuration["logging:level:value"] ??= "Info";
         var file = configuration["logging:file:value"] ??= "Mojito.log";
+        var maxFile = configuration["logging:file:max"] ??= "";
+        var rollSizeInKb = configuration["logging:file:rollSizeInKb"] ??= "";
         pattern = configuration["logging:pattern:value"] ??= "%date %level %message%newline";
 
         Logger logger = target.ToLower() switch
         {
             "console" => consoleLogger,
-            "file" => new FileLogger(file), // 这里每次写日志都new一个对象我感觉不太好，得想办法优化下。
+            "file" => new FileLogger(file, maxFile, rollSizeInKb), // 这里每次写日志都new一个对象我感觉不太好，得想办法优化下。
             _ => consoleLogger,
         };
 
