@@ -1,16 +1,20 @@
-﻿namespace Mojito.SimpleLogging.Loggers;
+﻿using System.Text.RegularExpressions;
+
+namespace Mojito.SimpleLogging.Loggers;
 
 public class FileLogger : Logger
 {
     private readonly string logFile;
-    private readonly int maxLogFile = 0;
-    private readonly int maxLogSize = 0;
+    private readonly int rollBackups = 0;
+    private readonly int rollSizeInKb = 0;
+    private readonly int rollMinutes = 0;
 
-    public FileLogger(string path, string maxSizeRollBackups, string maximumFileSize)
+    public FileLogger(string path, string maxRollBackups, string maxRollSize, string rollTimeInMinutes)
     {
         logFile = path;
-        _ = int.TryParse(maxSizeRollBackups, out maxLogFile);
-        _ = int.TryParse(maximumFileSize, out maxLogSize);
+        _ = int.TryParse(maxRollBackups, out rollBackups);
+        _ = int.TryParse(maxRollSize, out rollSizeInKb);
+        _ = int.TryParse(rollTimeInMinutes, out rollMinutes);
     }
 
     private static string GetMessage(string level, string message, string pattern)
@@ -23,44 +27,40 @@ public class FileLogger : Logger
 
     public override void Debug(string message, string pattern)
     {
-        CheckRollingBySize(pattern);
+        CheckRolling(pattern);
         var newMessage = GetMessage("Debug", message, pattern);
         File.AppendAllText(logFile, newMessage);
     }
 
     public override void Info(string message, string pattern)
     {
-        CheckRollingBySize(pattern);
+        CheckRolling(pattern);
         var newMessage = GetMessage("Info", message, pattern);
         File.AppendAllText(logFile, newMessage);
     }
 
     public override void Warn(string message, string pattern)
     {
-        CheckRollingBySize(pattern);
+        CheckRolling(pattern);
         var newMessage = GetMessage("Warn", message, pattern);
         File.AppendAllText(logFile, newMessage);
     }
 
     public override void Error(string message, string pattern)
     {
-        CheckRollingBySize(pattern);
+        CheckRolling(pattern);
         var newMessage = GetMessage("Error", message, pattern);
         File.AppendAllText(logFile, newMessage);
     }
 
     public override void Fatal(string message, string pattern)
     {
-        CheckRollingBySize(pattern);
+        CheckRolling(pattern);
         var newMessage = GetMessage("Fatal", message, pattern);
         File.AppendAllText(logFile, newMessage);
     }
 
-    /// <summary>
-    /// 按文件大小进行滚动
-    /// </summary>
-    /// <param name="pattern">日志的格式</param>
-    private void CheckRollingBySize(string pattern)
+    private void CheckRolling(string pattern)
     {
         var file = new FileInfo(logFile);
         if (!file.Exists)
@@ -68,45 +68,57 @@ public class FileLogger : Logger
 
         var fileSizeInBytes = file.Length;
         var fileSizeInKB = fileSizeInBytes / 1024;
+        var timeDifference = DateTime.Now - file.CreationTime;
 
-        if (maxLogSize != 0 && fileSizeInKB > maxLogSize)
+        if (rollSizeInKb != 0 && fileSizeInKB > rollSizeInKb)
         {
-            var index = 1;
-            var indexFile = "Log.Index";
+            Rolling(pattern);
+        }
 
-            try
-            {
-                var strIndex = File.ReadAllText(indexFile);
-                index = int.Parse(strIndex);
-            }
-            catch
-            {
-                // 吞掉这个异常
-            }
+        if (rollMinutes != 0 && timeDifference.TotalMinutes > rollMinutes)
+        {
+            Rolling(pattern);
+        }
+    }
 
-            try
-            {
-                if (index > maxLogFile && maxLogFile != 0)
-                    File.Delete($"{logFile}.{index - maxLogFile}");
-            }
-            catch (Exception ex)
-            {
-                var newMessage = GetMessage("Warn", ex.StackTrace ?? ex.Message, pattern);
-                File.AppendAllText(logFile, newMessage);
-            }
+    private void Rolling(string pattern)
+    {
+        var now = DateTime.Now;
 
-            var backup = $"{logFile}.{index}";
+        try
+        {
+            if (rollBackups != 0)
+                DeleteOldRollBackups(rollBackups);
 
-            try
+            File.Move(logFile, $"{logFile}.{now:yyyy-MM-dd_HH-mm-ss}");
+            File.Create(logFile).Close();
+            File.SetCreationTime(logFile, now);
+        }
+        catch (Exception ex)
+        {
+            var newMessage = GetMessage("Error", ex.StackTrace ?? ex.Message, pattern);
+            File.AppendAllText(logFile, newMessage);
+        }
+    }
+
+    private void DeleteOldRollBackups(int maxRollBackups)
+    {
+        var backupDirectory = Path.GetDirectoryName(logFile);
+        if (string.IsNullOrWhiteSpace(backupDirectory))
+            backupDirectory = Environment.CurrentDirectory;
+
+        var regexPattern = $@"^{Regex.Escape(logFile)}\..*";
+        var files = Directory.GetFiles(backupDirectory).Where(f => Regex.IsMatch(Path.GetFileName(f), regexPattern)).ToArray();
+        if (files == null)
+            return;
+
+        if (files.Length >= maxRollBackups)
+        {
+            Array.Sort(files, (a, b) => File.GetCreationTime(a).CompareTo(File.GetCreationTime(b)));
+
+            for (int i = 0; i <= files.Length - maxRollBackups; i++)
             {
-                File.Move(logFile, backup);
-                using var fileStream = File.Create(logFile);
-                File.WriteAllText(indexFile, (++index).ToString());
-            }
-            catch (Exception ex)
-            {
-                var newMessage = GetMessage("Error", ex.StackTrace ?? ex.Message, pattern);
-                File.AppendAllText(logFile, newMessage);
+                File.Delete(files[i]);
             }
         }
     }
