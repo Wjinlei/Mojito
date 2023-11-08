@@ -1,21 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using Mojito.SimpleLogging.Loggers;
+﻿using Mojito.SimpleLogging.Loggers;
 
 namespace Mojito.SimpleLogging;
 
 public static class LogHelper
 {
-    private static readonly IConfigurationRoot configuration;
-
     private static readonly ConsoleLogger consoleLogger;
+    private static readonly FileLogger fileLogger;
 
     static LogHelper()
     {
         consoleLogger = new ConsoleLogger();
-
-        configuration = new ConfigurationBuilder()
-            .AddXmlFile("App.config", optional: true, reloadOnChange: true)
-            .Build();
+        fileLogger = new FileLogger();
     }
 
     /// <summary>
@@ -25,22 +20,15 @@ public static class LogHelper
     /// <returns></returns>
     private static Logger? GetLogger(LogLevel currentLevel)
     {
-        var target = configuration["logging:target:value"] ??= "File";
-        var file = configuration["logging:target:file"] ??= "Mojito.log";
-        var maxFile = configuration["logging:target:max"] ??= "";
-        var rollSizeInKb = configuration["logging:target:rollSizeInKb"] ??= "";
-        var rollTimeInMinutes = configuration["logging:target:rollTimeInMinutes"] ??= "";
-        var level = configuration["logging:level:value"] ??= "Info";
-
-        Logger logger = target.ToLower() switch
+        Logger logger = LogConfigHelper.GetLogTarget() switch
         {
             "console" => consoleLogger,
-            "file" => new FileLogger(file, maxFile, rollSizeInKb, rollTimeInMinutes),
+            "file" => fileLogger,
             _ => consoleLogger,
         };
 
         // 根据当前的日志记录级别，判断是否应该返回给你日志器
-        return level.ToLower() switch
+        return LogConfigHelper.GetLogLevel() switch
         {
             "debug" => logger,
             "info" => currentLevel > LogLevel.Debug ? logger : null,
@@ -59,8 +47,7 @@ public static class LogHelper
     /// <returns></returns>
     private static string GetMessage(string level, string message)
     {
-        var pattern = configuration["logging:pattern:value"] ??= "%date %level %message%newline";
-        return pattern.Replace("%date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+        return LogConfigHelper.GetLogPattern().Replace("%date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
             .Replace("%level", level)
             .Replace("%message", message)
             .Replace("%newline", Environment.NewLine);
