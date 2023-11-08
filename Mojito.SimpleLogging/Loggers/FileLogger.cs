@@ -28,36 +28,31 @@ public class FileLogger : Logger
     public override void Debug(string message, string pattern)
     {
         CheckRolling(pattern);
-        var newMessage = GetMessage("Debug", message, pattern);
-        File.AppendAllText(logFile, newMessage);
+        File.AppendAllText(logFile, GetMessage("Debug", message, pattern));
     }
 
     public override void Info(string message, string pattern)
     {
         CheckRolling(pattern);
-        var newMessage = GetMessage("Info", message, pattern);
-        File.AppendAllText(logFile, newMessage);
+        File.AppendAllText(logFile, GetMessage("Info", message, pattern));
     }
 
     public override void Warn(string message, string pattern)
     {
         CheckRolling(pattern);
-        var newMessage = GetMessage("Warn", message, pattern);
-        File.AppendAllText(logFile, newMessage);
+        File.AppendAllText(logFile, GetMessage("Warn", message, pattern));
     }
 
     public override void Error(string message, string pattern)
     {
         CheckRolling(pattern);
-        var newMessage = GetMessage("Error", message, pattern);
-        File.AppendAllText(logFile, newMessage);
+        File.AppendAllText(logFile, GetMessage("Error", message, pattern));
     }
 
     public override void Fatal(string message, string pattern)
     {
         CheckRolling(pattern);
-        var newMessage = GetMessage("Fatal", message, pattern);
-        File.AppendAllText(logFile, newMessage);
+        File.AppendAllText(logFile, GetMessage("Fatal", message, pattern));
     }
 
     private void CheckRolling(string pattern)
@@ -70,21 +65,16 @@ public class FileLogger : Logger
         var fileSizeInKB = fileSizeInBytes / 1024;
         var timeDifference = DateTime.Now - file.CreationTime;
 
-        if (rollSizeInKb != 0 && fileSizeInKB > rollSizeInKb)
-        {
-            Rolling(pattern);
-        }
-
         if (rollMinutes != 0 && timeDifference.TotalMinutes > rollMinutes)
-        {
             Rolling(pattern);
-        }
+
+        if (rollSizeInKb != 0 && fileSizeInKB > rollSizeInKb)
+            Rolling(pattern);
     }
 
     private void Rolling(string pattern)
     {
         var now = DateTime.Now;
-
         try
         {
             if (rollBackups != 0)
@@ -93,6 +83,8 @@ public class FileLogger : Logger
             File.Move(logFile, $"{logFile}.{now:yyyy-MM-dd_HH-mm-ss}");
             File.Create(logFile).Close();
             File.SetCreationTime(logFile, now);
+            File.SetLastWriteTime(logFile, now);
+            File.SetLastAccessTime(logFile, now);
         }
         catch (Exception ex)
         {
