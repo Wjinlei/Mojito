@@ -2,5 +2,18 @@
 
 public abstract class Logger
 {
-    public abstract void WriteLog(string message);
+    public abstract void Log(string message, LogLevel level);
+
+    public virtual bool Writeable(LogLevel level)
+    {
+        return LogConfigHelper.GetLogLevel() switch
+        {
+            "debug" => true,
+            "info" => level >= LogLevel.Info,
+            "warn" => level >= LogLevel.Warn,
+            "error" => level >= LogLevel.Error,
+            "fatal" => level >= LogLevel.Fatal,
+            _ => true,
+        };
+    }
 }

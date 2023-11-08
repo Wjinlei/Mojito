@@ -16,26 +16,13 @@ public static class LogHelper
     /// <summary>
     /// 获得日志记录器
     /// </summary>
-    /// <param name="currentLevel">当前的日志记录级别，用来判断是否应该返回给你日志器</param>
-    /// <returns></returns>
-    private static Logger? GetLogger(LogLevel currentLevel)
+    private static Logger GetLogger()
     {
-        Logger logger = LogConfigHelper.GetLogTarget() switch
+        return LogConfigHelper.GetLogTarget() switch
         {
             "console" => consoleLogger,
             "file" => fileLogger,
             _ => consoleLogger,
-        };
-
-        // 根据当前的日志记录级别，判断是否应该返回给你日志器
-        return LogConfigHelper.GetLogLevel() switch
-        {
-            "debug" => logger,
-            "info" => currentLevel > LogLevel.Debug ? logger : null,
-            "warn" => currentLevel > LogLevel.Info ? logger : null,
-            "error" => currentLevel > LogLevel.Warn ? logger : null,
-            "fatal" => currentLevel > LogLevel.Error ? logger : null,
-            _ => logger,
         };
     }
 
@@ -56,30 +43,30 @@ public static class LogHelper
     public static void Debug(string message)
     {
         var newMessage = GetMessage("Debug", message);
-        GetLogger(LogLevel.Debug)?.WriteLog(newMessage);
+        GetLogger().Log(newMessage, LogLevel.Debug);
     }
 
     public static void Info(string message)
     {
         var newMessage = GetMessage("Info", message);
-        GetLogger(LogLevel.Info)?.WriteLog(newMessage);
+        GetLogger().Log(newMessage, LogLevel.Info);
     }
 
     public static void Warn(string message)
     {
         var newMessage = GetMessage("Warn", message);
-        GetLogger(LogLevel.Warn)?.WriteLog(newMessage);
+        GetLogger().Log(newMessage, LogLevel.Warn);
     }
 
     public static void Error(string message)
     {
         var newMessage = GetMessage("Error", message);
-        GetLogger(LogLevel.Error)?.WriteLog(newMessage);
+        GetLogger().Log(newMessage, LogLevel.Error);
     }
 
     public static void Fatal(string message)
     {
         var newMessage = GetMessage("Fatal", message);
-        GetLogger(LogLevel.Fatal)?.WriteLog(newMessage);
+        GetLogger().Log(newMessage, LogLevel.Fatal);
     }
 }

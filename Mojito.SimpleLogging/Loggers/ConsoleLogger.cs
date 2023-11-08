@@ -2,8 +2,9 @@
 
 public class ConsoleLogger : Logger
 {
-    public override void WriteLog(string message)
+    public override void Log(string message, LogLevel level)
     {
-        Console.WriteLine(message);
+        if (Writeable(level))
+            Console.WriteLine(message);
     }
 }

@@ -6,12 +6,15 @@ public class FileLogger : Logger
 {
     private readonly object _lock = new();
 
-    public override void WriteLog(string message)
+    public override void Log(string message, LogLevel level)
     {
         lock (_lock)
         {
-            CheckRolling();
-            File.AppendAllText(LogConfigHelper.GetLogPath(), message);
+            if (Writeable(level))
+            {
+                CheckRolling();
+                File.AppendAllText(LogConfigHelper.GetLogPath(), message);
+            }
         }
     }
 
