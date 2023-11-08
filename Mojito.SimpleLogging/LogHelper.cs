@@ -7,12 +7,10 @@ public static class LogHelper
 {
     private static readonly IConfigurationRoot configuration;
 
-    private static string pattern;
     private static readonly ConsoleLogger consoleLogger;
 
     static LogHelper()
     {
-        pattern = "";
         consoleLogger = new ConsoleLogger();
 
         configuration = new ConfigurationBuilder()
@@ -20,6 +18,11 @@ public static class LogHelper
             .Build();
     }
 
+    /// <summary>
+    /// 获得日志记录器
+    /// </summary>
+    /// <param name="currentLevel">当前的日志记录级别，用来判断是否应该返回给你日志器</param>
+    /// <returns></returns>
     private static Logger? GetLogger(LogLevel currentLevel)
     {
         var target = configuration["logging:target:value"] ??= "File";
@@ -28,7 +31,6 @@ public static class LogHelper
         var rollSizeInKb = configuration["logging:target:rollSizeInKb"] ??= "";
         var rollTimeInMinutes = configuration["logging:target:rollTimeInMinutes"] ??= "";
         var level = configuration["logging:level:value"] ??= "Info";
-        pattern = configuration["logging:pattern:value"] ??= "%date %level %message%newline";
 
         Logger logger = target.ToLower() switch
         {
@@ -37,6 +39,7 @@ public static class LogHelper
             _ => consoleLogger,
         };
 
+        // 根据当前的日志记录级别，判断是否应该返回给你日志器
         return level.ToLower() switch
         {
             "debug" => logger,
@@ -48,28 +51,48 @@ public static class LogHelper
         };
     }
 
+    /// <summary>
+    /// 根据日志的pattern，重新生成消息
+    /// </summary>
+    /// <param name="level">日志级别</param>
+    /// <param name="message">原始消息</param>
+    /// <returns></returns>
+    private static string GetMessage(string level, string message)
+    {
+        var pattern = configuration["logging:pattern:value"] ??= "%date %level %message%newline";
+        return pattern.Replace("%date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+            .Replace("%level", level)
+            .Replace("%message", message)
+            .Replace("%newline", Environment.NewLine);
+    }
+
     public static void Debug(string message)
     {
-        GetLogger(LogLevel.Debug)?.Debug(message, pattern);
+        var newMessage = GetMessage("Debug", message);
+        GetLogger(LogLevel.Debug)?.WriteLog(newMessage);
     }
 
     public static void Info(string message)
     {
-        GetLogger(LogLevel.Info)?.Info(message, pattern);
+        var newMessage = GetMessage("Info", message);
+        GetLogger(LogLevel.Info)?.WriteLog(newMessage);
     }
 
     public static void Warn(string message)
     {
-        GetLogger(LogLevel.Warn)?.Warn(message, pattern);
+        var newMessage = GetMessage("Warn", message);
+        GetLogger(LogLevel.Warn)?.WriteLog(newMessage);
     }
 
     public static void Error(string message)
     {
-        GetLogger(LogLevel.Error)?.Error(message, pattern);
+        var newMessage = GetMessage("Error", message);
+        GetLogger(LogLevel.Error)?.WriteLog(newMessage);
     }
 
     public static void Fatal(string message)
     {
-        GetLogger(LogLevel.Fatal)?.Fatal(message, pattern);
+        var newMessage = GetMessage("Fatal", message);
+        GetLogger(LogLevel.Fatal)?.WriteLog(newMessage);
     }
 }

@@ -17,45 +17,16 @@ public class FileLogger : Logger
         _ = int.TryParse(rollTimeInMinutes, out rollMinutes);
     }
 
-    private static string GetMessage(string level, string message, string pattern)
+    public override void WriteLog(string message)
     {
-        return pattern.Replace("%date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-            .Replace("%level", level)
-            .Replace("%message", message)
-            .Replace("%newline", Environment.NewLine);
+        CheckRolling();
+        File.AppendAllText(logFile, message);
     }
 
-    public override void Debug(string message, string pattern)
-    {
-        CheckRolling(pattern);
-        File.AppendAllText(logFile, GetMessage("Debug", message, pattern));
-    }
-
-    public override void Info(string message, string pattern)
-    {
-        CheckRolling(pattern);
-        File.AppendAllText(logFile, GetMessage("Info", message, pattern));
-    }
-
-    public override void Warn(string message, string pattern)
-    {
-        CheckRolling(pattern);
-        File.AppendAllText(logFile, GetMessage("Warn", message, pattern));
-    }
-
-    public override void Error(string message, string pattern)
-    {
-        CheckRolling(pattern);
-        File.AppendAllText(logFile, GetMessage("Error", message, pattern));
-    }
-
-    public override void Fatal(string message, string pattern)
-    {
-        CheckRolling(pattern);
-        File.AppendAllText(logFile, GetMessage("Fatal", message, pattern));
-    }
-
-    private void CheckRolling(string pattern)
+    /// <summary>
+    /// 检查是否需要滚动日志
+    /// </summary>
+    private void CheckRolling()
     {
         var file = new FileInfo(logFile);
         if (!file.Exists)
@@ -65,16 +36,20 @@ public class FileLogger : Logger
         var fileSizeInKB = fileSizeInBytes / 1024;
         var timeDifference = DateTime.Now - file.CreationTime;
 
-        if (rollMinutes != 0 && timeDifference.TotalMinutes > rollMinutes)
-            Rolling(pattern);
-
-        if (rollSizeInKb != 0 && fileSizeInKB > rollSizeInKb)
-            Rolling(pattern);
+        if ((rollMinutes != 0 && timeDifference.TotalMinutes > rollMinutes) ||
+            (rollSizeInKb != 0 && fileSizeInKB > rollSizeInKb))
+        {
+            Rolling();
+        }
     }
 
-    private void Rolling(string pattern)
+    /// <summary>
+    /// 滚动日志
+    /// </summary>
+    private void Rolling()
     {
         var now = DateTime.Now;
+
         try
         {
             if (rollBackups != 0)
@@ -83,29 +58,36 @@ public class FileLogger : Logger
             File.Move(logFile, $"{logFile}.{now:yyyy-MM-dd_HH-mm-ss}");
             File.Create(logFile).Close();
             File.SetCreationTime(logFile, now);
-            File.SetLastWriteTime(logFile, now);
-            File.SetLastAccessTime(logFile, now);
         }
         catch (Exception ex)
         {
-            var newMessage = GetMessage("Error", ex.StackTrace ?? ex.Message, pattern);
-            File.AppendAllText(logFile, newMessage);
+            var errorMessage = $"{now:yyyy-MM-dd_HH-mm-ss} RollError {ex.Message} {ex.StackTrace}{Environment.NewLine}";
+            File.AppendAllText(logFile, errorMessage);
         }
     }
 
+    /// <summary>
+    /// 删除旧的滚动日志，保持最大滚动日志数量
+    /// </summary>
+    /// <param name="maxRollBackups">最大日志数量</param>
     private void DeleteOldRollBackups(int maxRollBackups)
     {
         var backupDirectory = Path.GetDirectoryName(logFile);
         if (string.IsNullOrWhiteSpace(backupDirectory))
             backupDirectory = Environment.CurrentDirectory;
 
+        // 过滤日志备份文件
         var regexPattern = $@"^{Regex.Escape(logFile)}\..*";
-        var files = Directory.GetFiles(backupDirectory).Where(f => Regex.IsMatch(Path.GetFileName(f), regexPattern)).ToArray();
+        var files = Directory.GetFiles(backupDirectory)
+            .Where(f => Regex.IsMatch(Path.GetFileName(f), regexPattern))
+            .ToArray();
+
         if (files == null)
             return;
 
         if (files.Length >= maxRollBackups)
         {
+            // 按创建时间排序
             Array.Sort(files, (a, b) => File.GetCreationTime(a).CompareTo(File.GetCreationTime(b)));
 
             for (int i = 0; i <= files.Length - maxRollBackups; i++)
