@@ -12,31 +12,26 @@ public class ConsoleLogger : Logger
 
     public override void Debug(string message, string pattern)
     {
-        var newMessage = GetMessage("Debug", message, pattern);
-        Console.WriteLine(newMessage);
+        Console.WriteLine(GetMessage("Debug", message, pattern));
     }
 
     public override void Info(string message, string pattern)
     {
-        var newMessage = GetMessage("Info", message, pattern);
-        Console.WriteLine(newMessage);
+        Console.WriteLine(GetMessage("Info", message, pattern));
     }
 
     public override void Warn(string message, string pattern)
     {
-        var newMessage = GetMessage("Warn", message, pattern);
-        Console.WriteLine(newMessage);
+        Console.WriteLine(GetMessage("Warn", message, pattern));
     }
 
     public override void Error(string message, string pattern)
     {
-        var newMessage = GetMessage("Error", message, pattern);
-        Console.WriteLine(newMessage);
+        Console.WriteLine(GetMessage("Error", message, pattern));
     }
 
     public override void Fatal(string message, string pattern)
     {
-        var newMessage = GetMessage("Fatal", message, pattern);
-        Console.WriteLine(newMessage);
+        Console.WriteLine(GetMessage("Fatal", message, pattern));
     }
 }
