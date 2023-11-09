@@ -11,7 +11,7 @@ public class FileLogger : Logger
         var logPath = LogConfigHelper.GetLogPath();
         lock (_lock)
         {
-            if (Writeable(level))
+            if (IsWriteable(level))
             {
                 CheckRollBackups();
                 CheckDirectory(logPath);
