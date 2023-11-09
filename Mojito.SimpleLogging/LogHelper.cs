@@ -16,38 +16,38 @@ public static class LogHelper
     /// <summary>
     /// 获得日志记录器
     /// </summary>
-    private static Logger GetLogger()
+    private static Logger? GetLogger()
     {
         return LogConfigHelper.GetLogTarget() switch
         {
             "console" => consoleLogger,
             "file" => fileLogger,
-            _ => consoleLogger,
+            _ => null,
         };
     }
 
     public static void Debug(string message)
     {
-        GetLogger().Log(message, LogLevel.Debug);
+        GetLogger()?.Log(message, LogLevel.Debug);
     }
 
     public static void Info(string message)
     {
-        GetLogger().Log(message, LogLevel.Info);
+        GetLogger()?.Log(message, LogLevel.Info);
     }
 
     public static void Warn(string message)
     {
-        GetLogger().Log(message, LogLevel.Warn);
+        GetLogger()?.Log(message, LogLevel.Warn);
     }
 
     public static void Error(string message)
     {
-        GetLogger().Log(message, LogLevel.Error);
+        GetLogger()?.Log(message, LogLevel.Error);
     }
 
     public static void Fatal(string message)
     {
-        GetLogger().Log(message, LogLevel.Fatal);
+        GetLogger()?.Log(message, LogLevel.Fatal);
     }
 }
