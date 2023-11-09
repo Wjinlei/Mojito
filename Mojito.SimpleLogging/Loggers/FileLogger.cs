@@ -8,18 +8,14 @@ public class FileLogger : Logger
 
     public override void Log(string message, LogLevel level)
     {
+        var logPath = LogConfigHelper.GetLogPath();
         lock (_lock)
         {
             if (Writeable(level))
             {
                 CheckRollBackups();
-
-                var dir = Path.GetDirectoryName(LogConfigHelper.GetLogPath());
-                if (dir != null && dir != "")
-                    if (!Directory.Exists(null))
-                        Directory.CreateDirectory(dir);
-
-                File.AppendAllText(LogConfigHelper.GetLogPath(), message);
+                CheckDirectory(logPath);
+                File.AppendAllText(logPath, message);
             }
         }
     }
@@ -99,5 +95,13 @@ public class FileLogger : Logger
             for (int i = 0; i <= files.Length - maxRollBackups; i++)
                 File.Delete(files[i]);
         }
+    }
+
+    private static void CheckDirectory(string path)
+    {
+        var dir = Path.GetDirectoryName(path);
+        if (dir != null && dir != "")
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
     }
 }
