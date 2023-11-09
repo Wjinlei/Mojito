@@ -100,7 +100,7 @@ public class FileLogger : Logger
     private static void CheckDirectory(string path)
     {
         var dir = Path.GetDirectoryName(path);
-        if (dir != null && dir != "")
+        if (!string.IsNullOrWhiteSpace(dir))
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
     }
