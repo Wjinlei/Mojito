@@ -5,15 +5,15 @@ namespace Mojito.SimpleLogging.Test
         [Test]
         public void TestConsoleLogger()
         {
-            var message = "Hello World!";
+            var message = "Test ConsoleLogger";
             LogHelper.Info(message);
         }
 
         [Test]
         public void TestFileLogger()
         {
-            var message = "Hello World!";
-            LogHelper.Error(message);
+            var message = "Test FileLogger";
+            LogHelper.Info(message);
 
             var result = File.ReadAllText("Mojito.log");
             TestContext.Out.Write(result);
