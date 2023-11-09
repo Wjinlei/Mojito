@@ -12,7 +12,13 @@ public class FileLogger : Logger
         {
             if (Writeable(level))
             {
-                CheckRolling();
+                CheckRollBackups();
+
+                var dir = Path.GetDirectoryName(LogConfigHelper.GetLogPath());
+                if (dir != null && dir != "")
+                    if (!Directory.Exists(null))
+                        Directory.CreateDirectory(dir);
+
                 File.AppendAllText(LogConfigHelper.GetLogPath(), message);
             }
         }
@@ -21,11 +27,10 @@ public class FileLogger : Logger
     /// <summary>
     /// 检查是否需要滚动日志
     /// </summary>
-    private static void CheckRolling()
+    private static void CheckRollBackups()
     {
         var rollTimeInMinutes = LogConfigHelper.GetRollTimeInMinutes();
         var maxRollSizeInKB = LogConfigHelper.GetMaxRollSizeInKB();
-
         var file = new FileInfo(LogConfigHelper.GetLogPath());
         if (!file.Exists)
             return;
@@ -37,14 +42,14 @@ public class FileLogger : Logger
         if ((rollTimeInMinutes != 0 && timeDifference.TotalMinutes > rollTimeInMinutes) ||
             (maxRollSizeInKB != 0 && fileSizeInKB > maxRollSizeInKB))
         {
-            Rolling();
+            RollBackups();
         }
     }
 
     /// <summary>
     /// 滚动日志
     /// </summary>
-    private static void Rolling()
+    private static void RollBackups()
     {
         var now = DateTime.Now;
         var strNow = $"{now:yyyy-MM-dd_HH-mm-ss}";
