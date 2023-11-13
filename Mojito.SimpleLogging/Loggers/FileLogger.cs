@@ -9,9 +9,9 @@ public class FileLogger : Logger
     public override void Log(string message, LogLevel level)
     {
         var logPath = LogConfigHelper.GetLogPath();
-        lock (_lock)
+        if (IsWriteable(level))
         {
-            if (IsWriteable(level))
+            lock (_lock)
             {
                 CheckRollBackups();
                 CheckDirectory(logPath);
@@ -35,8 +35,8 @@ public class FileLogger : Logger
         var fileSizeInKB = fileSizeInBytes / 1024;
         var timeDifference = DateTime.Now - file.CreationTime;
 
-        if ((rollTimeInMinutes != 0 && timeDifference.TotalMinutes > rollTimeInMinutes) ||
-            (maxRollSizeInKB != 0 && fileSizeInKB > maxRollSizeInKB))
+        if ((rollTimeInMinutes > 0 && timeDifference.TotalMinutes >= rollTimeInMinutes) ||
+            (maxRollSizeInKB > 0 && fileSizeInKB >= maxRollSizeInKB))
         {
             RollBackups();
         }
@@ -53,7 +53,7 @@ public class FileLogger : Logger
         var maxRollBackups = LogConfigHelper.GetMaxRollBackups();
         try
         {
-            if (maxRollBackups != 0)
+            if (maxRollBackups > 0)
                 DeleteOldRollBackups(maxRollBackups);
 
             File.Move(logPath, $"{logPath}.{strNow}");
