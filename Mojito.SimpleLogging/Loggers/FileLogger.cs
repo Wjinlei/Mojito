@@ -74,13 +74,18 @@ public class FileLogger : Logger
     private static void DeleteOldRollBackups(int maxRollBackups)
     {
         var logPath = LogConfigHelper.GetLogPath();
-        var backupDirectory = Path.GetDirectoryName(logPath);
-        if (string.IsNullOrWhiteSpace(backupDirectory))
-            backupDirectory = Environment.CurrentDirectory;
+
+        var fileName = Path.GetFileName(logPath);
+        if (string.IsNullOrWhiteSpace(fileName))
+            throw new FileNotFoundException($"GetFileName Error: {logPath}");
+
+        var fileDir = Path.GetDirectoryName(logPath);
+        if (string.IsNullOrWhiteSpace(fileDir))
+            fileDir = Environment.CurrentDirectory;
 
         // 过滤日志备份文件
-        var regexPattern = $@"^{Regex.Escape(logPath)}\..*";
-        var files = Directory.GetFiles(backupDirectory)
+        var regexPattern = $@"^{Regex.Escape(fileName)}\..*";
+        var files = Directory.GetFiles(fileDir)
             .Where(f => Regex.IsMatch(Path.GetFileName(f), regexPattern))
             .ToArray();
 
