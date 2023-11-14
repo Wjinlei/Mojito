@@ -77,7 +77,7 @@ public class FileLogger : Logger
 
         var fileName = Path.GetFileName(logPath);
         if (string.IsNullOrWhiteSpace(fileName))
-            throw new FileNotFoundException($"GetFileName Error: {logPath}");
+            throw new NullReferenceException($"GetFileName Error: logPath is {logPath}");
 
         var fileDir = Path.GetDirectoryName(logPath);
         if (string.IsNullOrWhiteSpace(fileDir))
