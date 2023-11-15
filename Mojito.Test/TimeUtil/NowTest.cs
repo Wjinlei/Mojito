@@ -1,4 +1,6 @@
-﻿namespace Mojito.Test.DateTime;
+﻿using Mojito.TimeUtil;
+
+namespace Mojito.Test.TimeUtil;
 
 public class NowTest
 {
@@ -6,7 +8,7 @@ public class NowTest
     public void TestGetYear()
     {
         var sysYear = System.DateTime.Now.ToString("yyyy");
-        var myYear = Mojito.DateTime.Now.GetYear();
+        var myYear = Now.GetYear();
         Assert.That(myYear, Is.EqualTo(sysYear));
     }
 
@@ -14,7 +16,7 @@ public class NowTest
     public void TestGetMonth()
     {
         var sysMonth = System.DateTime.Now.ToString("MM");
-        var myMonth = Mojito.DateTime.Now.GetMonth();
+        var myMonth = Now.GetMonth();
         Assert.That(myMonth, Is.EqualTo(sysMonth));
     }
 
@@ -22,7 +24,7 @@ public class NowTest
     public void TestGetDay()
     {
         var sysDay = System.DateTime.Now.ToString("dd");
-        var myDay = Mojito.DateTime.Now.GetDay();
+        var myDay = Now.GetDay();
         Assert.That(myDay, Is.EqualTo(sysDay));
     }
 
@@ -30,7 +32,7 @@ public class NowTest
     public void TestGetHour()
     {
         var sysHour = System.DateTime.Now.ToString("HH");
-        var myHour = Mojito.DateTime.Now.GetHour();
+        var myHour = Now.GetHour();
         Assert.That(myHour, Is.EqualTo(sysHour));
     }
 
@@ -38,7 +40,7 @@ public class NowTest
     public void TestGetMinute()
     {
         var sysMinute = System.DateTime.Now.ToString("mm");
-        var myMinute = Mojito.DateTime.Now.GetMinute();
+        var myMinute = Now.GetMinute();
         Assert.That(myMinute, Is.EqualTo(sysMinute));
     }
 
@@ -46,7 +48,7 @@ public class NowTest
     public void TestGetSecond()
     {
         var sysSecond = System.DateTime.Now.ToString("ss");
-        var mySecond = Mojito.DateTime.Now.GetSecond();
+        var mySecond = Now.GetSecond();
         Assert.That(mySecond, Is.EqualTo(sysSecond));
     }
 
@@ -54,7 +56,7 @@ public class NowTest
     public void TestGetTime()
     {
         var sysTime = System.DateTime.Now.ToString("HH:mm:ss");
-        var myTime = Mojito.DateTime.Now.GetTime();
+        var myTime = Now.GetTime();
         Assert.That(myTime, Is.EqualTo(sysTime));
     }
 
@@ -62,7 +64,7 @@ public class NowTest
     public void TestGetDate()
     {
         var sysDate = System.DateTime.Now.ToString("yyyy-MM-dd");
-        var myDate = Mojito.DateTime.Now.GetDate();
+        var myDate = Now.GetDate();
         Assert.That(myDate, Is.EqualTo(sysDate));
     }
 
@@ -70,7 +72,7 @@ public class NowTest
     public void TestGetDateTime()
     {
         var sysDateTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        var myDateTime = Mojito.DateTime.Now.GetDateTime();
+        var myDateTime = Now.GetDateTime();
         Assert.That(myDateTime, Is.EqualTo(sysDateTime));
     }
 
@@ -79,7 +81,7 @@ public class NowTest
     {
         var timeFormat = "yyyy/MM/dd HH:mm:ss";
         var sysDateTime = System.DateTime.Now.ToString(timeFormat);
-        var myDateTime = Mojito.DateTime.Now.Format(timeFormat);
+        var myDateTime = Now.Format(timeFormat);
         Assert.That(myDateTime, Is.EqualTo(sysDateTime));
     }
 
@@ -87,7 +89,7 @@ public class NowTest
     public void TestGetUnixTimestamp()
     {
         var sysDateTime = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        var timestamp = Mojito.DateTime.Now.GetUnixTimestamp();
+        var timestamp = Now.GetUnixTimestamp();
         TestContext.Out.WriteLine(timestamp);
         var temp = TimeZoneInfo.ConvertTime(new System.DateTime(1970, 1, 1), TimeZoneInfo.Utc, TimeZoneInfo.Local);
         var myDateTime = temp.AddSeconds(timestamp).ToString("yyyy-MM-dd HH:mm:ss");

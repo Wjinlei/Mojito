@@ -1,4 +1,4 @@
-﻿namespace Mojito.DateTime;
+﻿namespace Mojito.TimeUtil;
 
 public static class Timestamp
 {
