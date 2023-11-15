@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 
-namespace Mojito.IO;
+namespace Mojito.IOUtil;
 
 public class Downloader
 {
