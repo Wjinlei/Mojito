@@ -1,27 +1,15 @@
-﻿namespace Mojito.Random;
+﻿namespace Mojito.Rng;
 
 public static class String
 {
-    private static readonly System.Random Rnd = new();
-
     /// <summary>
     /// Generates a random string of Letter
     /// </summary>
     /// <param name="length">The length of a random string generated</param>
     /// <returns></returns>
-    public static string Letters(uint length)
+    public static string Alpha(uint length)
     {
         return Create("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
-    }
-
-    /// <summary>
-    /// Generates a random string of Number
-    /// </summary>
-    /// <param name="length">The length of a random string generated</param>
-    /// <returns></returns>
-    public static string Numbers(uint length)
-    {
-        return Create("0123456789", length);
     }
 
     /// <summary>
@@ -29,9 +17,19 @@ public static class String
     /// </summary>
     /// <param name="length">The length of a random string generated</param>
     /// <returns></returns>
-    public static string CombinationOfLettersAndNumbers(uint length)
+    public static string AlphaNumber(uint length)
     {
         return Create("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
+    }
+
+    /// <summary>
+    /// Generates a random string of Number
+    /// </summary>
+    /// <param name="length">The length of a random string generated</param>
+    /// <returns></returns>
+    public static string Number(uint length)
+    {
+        return Create("0123456789", length);
     }
 
     /// <summary>
@@ -52,7 +50,8 @@ public static class String
     /// <returns></returns>
     public static string Create(string seed, uint length)
     {
+        var rnd = new Random();
         return new string(Enumerable.Repeat(seed, (int)length)
-            .Select(s => s[Rnd.Next(s.Length)]).ToArray());
+            .Select(s => s[rnd.Next(s.Length)]).ToArray());
     }
 }
