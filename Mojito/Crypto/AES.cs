@@ -54,12 +54,12 @@ public static class AES
     public static string GbkAesEncryptToHex(string plainText, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
         System.Text.Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        return Convert.ToHexString(AesEncrypt(plainText, key, cipherMode, paddingMode, System.Text.Encoding.GetEncoding("GBK")));
+        return System.Convert.ToHexString(AesEncrypt(plainText, key, cipherMode, paddingMode, System.Text.Encoding.GetEncoding("GBK")));
     }
 
     public static string Utf8AesEncryptToHex(string plainText, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
-        return Convert.ToHexString(AesEncrypt(plainText, key, cipherMode, paddingMode, System.Text.Encoding.UTF8));
+        return System.Convert.ToHexString(AesEncrypt(plainText, key, cipherMode, paddingMode, System.Text.Encoding.UTF8));
     }
 
 
@@ -108,14 +108,14 @@ public static class AES
 
     public static string GbkAesDecryptFromHex(string hex, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
-        var encrypted = Convert.FromHexString(hex);
+        var encrypted = System.Convert.FromHexString(hex);
         System.Text.Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         return AesDecrypt(encrypted, key, cipherMode, paddingMode, System.Text.Encoding.GetEncoding("GBK"));
     }
 
     public static string Utf8AesDecryptFromHex(string hex, string key, CipherMode cipherMode, PaddingMode paddingMode)
     {
-        var encrypted = Convert.FromHexString(hex);
+        var encrypted = System.Convert.FromHexString(hex);
         return AesDecrypt(encrypted, key, cipherMode, paddingMode, System.Text.Encoding.UTF8);
     }
 }
