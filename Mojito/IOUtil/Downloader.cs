@@ -4,7 +4,7 @@ namespace Mojito.IOUtil;
 
 public class Downloader
 {
-    private readonly HttpClient HttpClient;
+    private readonly HttpClient httpClient;
     public int ThreadCount { get; set; }
     public string Url { get; set; }
     public string SavePath { get; set; }
@@ -18,7 +18,7 @@ public class Downloader
         Url = url;
         SavePath = savePath;
         ThreadCount = 1;
-        HttpClient = new HttpClient
+        httpClient = new HttpClient
         {
             Timeout = TimeSpan.FromMinutes(5)
         };
@@ -35,7 +35,7 @@ public class Downloader
         Url = url;
         SavePath = savePath;
         ThreadCount = threadCount;
-        HttpClient = new HttpClient
+        httpClient = new HttpClient
         {
             Timeout = TimeSpan.FromMinutes(5)
         };
@@ -53,7 +53,7 @@ public class Downloader
         Url = url;
         SavePath = savePath;
         ThreadCount = threadCount;
-        HttpClient = new HttpClient
+        httpClient = new HttpClient
         {
             Timeout = timeout
         };
@@ -66,7 +66,7 @@ public class Downloader
     /// <returns></returns>
     public void StartDownload(bool overwrite)
     {
-        var response = HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, Url)).Result;
+        var response = httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, Url)).Result;
         if (!response.IsSuccessStatusCode)
             throw new HttpRequestException("Get file size failed.");
         if (response.Content.Headers.ContentLength is null)
@@ -84,6 +84,7 @@ public class Downloader
             fs.SetLength(fileSize);
         }
 
+        // Segmented download
         var tasksDownloadRange = new List<Task>();
         for (int i = 0; i < ThreadCount; i++)
         {
@@ -92,7 +93,7 @@ public class Downloader
             var to = (i + 1) * blockSize - 1;
             if (i == ThreadCount - 1)
                 to = fileSize - 1;
-            // Add task
+
             tasksDownloadRange.Add(DownloadPart(from, to));
         }
 
@@ -111,7 +112,7 @@ public class Downloader
         // Get part
         var request = new HttpRequestMessage(HttpMethod.Get, Url);
         request.Headers.Range = new RangeHeaderValue(from, to);
-        var response = HttpClient.Send(request);
+        var response = httpClient.Send(request);
 
         // Open stream
         using var fileStream = new FileStream(SavePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
