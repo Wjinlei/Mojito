@@ -11,7 +11,7 @@ public static class Md5
     /// <returns></returns>
     public static string FileSum(string filepath)
     {
-        return Sum(IO.File.ReadAllBytes(filepath));
+        return Sum(File.ReadAllBytes(filepath));
     }
 
     /// <summary>

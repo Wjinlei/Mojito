@@ -20,7 +20,7 @@ public class Md5Test
     [Test]
     public void TestFileSum()
     {
-        Mojito.IO.File.WriteAllText("test_file.txt", "Hello World!");
+        File.WriteAllText("test_file.txt", "Hello World!");
         var result = Mojito.Crypto.Md5.FileSum("test_file.txt");
         Assert.That(result, Is.EqualTo("28c637ace8581c8c27e1aa62def3602d"));
     }
@@ -28,6 +28,6 @@ public class Md5Test
     [TearDown]
     public void Clear()
     {
-        Mojito.IO.File.Delete("test_file.txt");
+        File.Delete("test_file.txt");
     }
 }
