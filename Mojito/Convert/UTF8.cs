@@ -1,4 +1,4 @@
-﻿namespace Mojito.ConvertUtil;
+﻿namespace Mojito.Convert;
 
 public static class UTF8
 {

@@ -1,6 +1,6 @@
-﻿using Mojito.ConvertUtil;
+﻿using Mojito.Convert;
 
-namespace Mojito.Test.ConvertUtil;
+namespace Mojito.Test.Convert;
 
 public class GBKTest
 {
