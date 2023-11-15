@@ -20,4 +20,10 @@
     <ProjectReference Include="..\Mojito\Mojito.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="test_file.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -3,26 +3,23 @@
 public class Md5Test
 {
     [Test]
-    public void TestSum1()
+    public void TestSum()
     {
-        var bytes = System.Text.Encoding.UTF8.GetBytes("Hello 中国!");
-        var result = Mojito.Crypto.Md5.Sum(bytes);
-        Assert.That(result, Is.EqualTo("dd17cdf3b174ce79dc3f722f1bf1543a"));
-    }
+        var str = "Hello 中国!";
+        var bytes = System.Text.Encoding.UTF8.GetBytes(str);
 
-    [Test]
-    public void TestSum2()
-    {
-        var result = Mojito.Crypto.Md5.Sum("Hello 中国!");
-        Assert.That(result, Is.EqualTo("dd17cdf3b174ce79dc3f722f1bf1543a"));
+        var result1 = Mojito.Crypto.Md5.Sum(str);
+        Assert.That(result1, Is.EqualTo("dd17cdf3b174ce79dc3f722f1bf1543a"));
+
+        var result2 = Mojito.Crypto.Md5.Sum(bytes);
+        Assert.That(result2, Is.EqualTo("dd17cdf3b174ce79dc3f722f1bf1543a"));
     }
 
     [Test]
     public void TestFileSum()
     {
-        File.WriteAllText("test_file.txt", "Hello World!");
         var result = Mojito.Crypto.Md5.FileSum("test_file.txt");
-        Assert.That(result, Is.EqualTo("28c637ace8581c8c27e1aa62def3602d"));
+        Assert.That(result, Is.EqualTo("5f879271784946b093d424b637b3a6f9"));
     }
 
     [TearDown]
