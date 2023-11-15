@@ -1,4 +1,4 @@
-﻿namespace Mojito.Encoding;
+﻿namespace Mojito.ConvertUtil;
 
 public static class GBK
 {

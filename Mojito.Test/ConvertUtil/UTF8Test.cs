@@ -1,4 +1,6 @@
-﻿namespace Mojito.Test.Encoding;
+﻿using Mojito.ConvertUtil;
+
+namespace Mojito.Test.ConvertUtil;
 
 public class UTF8Test
 {
@@ -7,7 +9,7 @@ public class UTF8Test
     {
         var gbkBytes = new byte[] { 72, 101, 108, 108, 111, 32, 214, 208, 185, 250, 33 };
 
-        var result = Mojito.Encoding.UTF8.Utf8ToGbk(new byte[] { 72, 101, 108, 108, 111, 32, 228, 184, 173, 229, 155, 189, 33 });
+        var result = UTF8.Utf8ToGbk(new byte[] { 72, 101, 108, 108, 111, 32, 228, 184, 173, 229, 155, 189, 33 });
 
         Assert.That(result, Is.EqualTo(gbkBytes));
     }
