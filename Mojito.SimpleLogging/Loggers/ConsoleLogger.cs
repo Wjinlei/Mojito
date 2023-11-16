@@ -15,6 +15,9 @@ public class ConsoleLogger : Logger
         };
 
         if (IsWriteable(level))
+        {
             Console.WriteLine(message);
+            Console.ResetColor();
+        }
     }
 }
