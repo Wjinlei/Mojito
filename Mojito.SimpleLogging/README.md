@@ -40,7 +40,7 @@ App.config
 - `Fatal`
 
 `pattern` // Log pattern
-- `%date` // Date time by yyyy-MM-dd HH:mm:ss
+- `%date` // Date time format is `yyyy-MM-dd HH:mm:ss`
 - `%level` // Log level
 - `%message` // Your message
 - `%newline` // Environment.NewLine
