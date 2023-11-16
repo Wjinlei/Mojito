@@ -11,6 +11,7 @@
     <Description>A very simple logging library</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>SimpleLogging;Logging;Mojito</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
