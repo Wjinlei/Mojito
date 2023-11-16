@@ -23,9 +23,24 @@ App.config
 </configuration>
 ```
 
+
 ### Options
 
-`target` // console | file  
-`rollSizeInKb="512"` // The log is larger than or equal to 512kb  
-`rollTimeInMinutes="1440"` // The log is rolled every 1 day  
-`maxRollBackups="10"` // The maximum retention is 10 copies  
+`target`: // Logger target `Console` | `file` 
+    - `file` // Log path
+    - `rollSizeInKb="512"` // The log is larger than or equal to 512kb  
+    - `rollTimeInMinutes="1440"` // The log is rolled every 1 day  
+    - `maxRollBackups="10"` // The maximum retention is 10 copies  
+
+`level`: // Log level
+    - `Debug`
+    - `Info`
+    - `Warn`
+    - `Error`
+    - `Fatal`
+
+`pattern` // Log pattern
+    - `%date` // Date time by yyyy-MM-dd HH:mm:ss
+    - `%level` // Log level
+    - `%message` // Your message
+    - `%newline` // Environment.NewLine
