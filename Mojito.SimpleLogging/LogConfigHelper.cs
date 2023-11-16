@@ -26,7 +26,7 @@ public static class LogConfigHelper
 
     public static string GetLogLevel()
     {
-        var level = configuration["logging:level:value"] ??= "Info";
+        var level = configuration["logging:level:value"] ??= "Debug";
         return level.ToLower();
     }
 
