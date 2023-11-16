@@ -32,7 +32,7 @@ public static class LogConfigHelper
 
     public static string GetLogPattern()
     {
-        return configuration["logging:pattern:value"] ??= "%date %level %message%newline";
+        return configuration["logging:pattern:value"] ??= "%date [%level] %message%newline";
     }
 
     public static int GetMaxRollBackups()
