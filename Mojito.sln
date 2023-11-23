@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mojito", "Mojito\Mojito.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mojito.Test", "Mojito.Test\Mojito.Test.csproj", "{BBA59C9F-F938-4C30-9459-04CCBBE5B942}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mojito.SimpleLogging", "Mojito.SimpleLogging\Mojito.SimpleLogging.csproj", "{1E13A427-99B7-4FD9-99B9-85A79B785DAF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mojito.SimpleLogging.Test", "Mojito.SimpleLogging.Test\Mojito.SimpleLogging.Test.csproj", "{445EBBBD-9D02-41EA-B7C7-FDB123271517}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,14 +21,6 @@ Global
 		{BBA59C9F-F938-4C30-9459-04CCBBE5B942}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA59C9F-F938-4C30-9459-04CCBBE5B942}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA59C9F-F938-4C30-9459-04CCBBE5B942}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E13A427-99B7-4FD9-99B9-85A79B785DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E13A427-99B7-4FD9-99B9-85A79B785DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E13A427-99B7-4FD9-99B9-85A79B785DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E13A427-99B7-4FD9-99B9-85A79B785DAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{445EBBBD-9D02-41EA-B7C7-FDB123271517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{445EBBBD-9D02-41EA-B7C7-FDB123271517}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{445EBBBD-9D02-41EA-B7C7-FDB123271517}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{445EBBBD-9D02-41EA-B7C7-FDB123271517}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
